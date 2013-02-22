@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import sys
 import logging
 import argparse
 
@@ -8,7 +9,7 @@ import pysubs
 from subtitle_resync_helper import time, timemap, shifter
 
 
-def run():
+def run(args=sys.argv):
 
     class ArgumentParser(argparse.ArgumentParser):
         def format_usage(self):
@@ -37,7 +38,7 @@ def run():
                         help="开始结束时间调整量不同的处理方法，默认为 apart")
     parser.add_argument('-ec', '--endcheck', action="store_true",
                         help="时间映射表结尾存在校验项")
-    args = parser.parse_args()
+    args = parser.parse_args(args)
 
     ftm = args.timemap
     fni = args.source
