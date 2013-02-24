@@ -1,9 +1,13 @@
 # -*- coding: utf-8 -*-
 
-from subtitle_resync_helper import cli
+import sys
 
-cli.run([
-    r"D:\temp\srh\timemap.txt",
-    r"D:\temp\srh\test.ass",
-    r"D:\temp\srh\testo.ass",
-])
+from PyQt4.QtGui import QApplication
+
+from subtitle_resync_helper import gui
+
+app = QApplication(sys.argv)
+window = gui.Form()
+
+window.show()
+sys.exit(app.exec())
