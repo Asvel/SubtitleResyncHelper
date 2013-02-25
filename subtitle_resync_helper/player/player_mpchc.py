@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from . import config, win
+from .. import config, win
 from .player import Player
 
 

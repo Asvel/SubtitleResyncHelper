@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from . import config, win
+from .. import win
 from .player_mpchc import PlayerMPCHC as Player
 
 

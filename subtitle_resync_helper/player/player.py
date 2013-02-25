@@ -2,7 +2,7 @@
 
 import subprocess
 
-from . import config, time, win
+from .. import config, time, win
 
 
 class Player(object):
