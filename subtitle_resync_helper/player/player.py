@@ -18,7 +18,7 @@ class Player(object):
             self.close()
 
     def _generate_args(self, filepath):
-        return [config.player, filepath]
+        return [config.playerpath, filepath]
 
     def _prepare(self):
         win.WaitForInputIdle(self._handle, win.INFINITE)

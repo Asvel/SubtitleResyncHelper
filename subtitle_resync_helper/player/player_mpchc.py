@@ -11,7 +11,7 @@ class PlayerMPCHC(Player):
         pass
 
     def _generate_args(self, filepath):
-        return [config.player, "/open", "/new", filepath]
+        return [config.playerpath, "/open", "/new", filepath]
 
     def _get_main_window_handle(self):
         return win.FindWindow("MPC-HC", None)

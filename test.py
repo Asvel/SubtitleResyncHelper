@@ -1,13 +1,17 @@
 # -*- coding: utf-8 -*-
 
-import time
+import sys
 
-from subtitle_resync_helper import config, player
+from PyQt4.QtGui import QApplication
 
-config.player = r'C:\app\MPC-BE\mpc-be.exe'
+from subtitle_resync_helper import config
+config.playerpath = r'C:\app\MPC-BE\mpc-be.exe'
+config.playername = "MPCBE"
 
-playerx = player.MPCBE(r"D:\temp\srh\test.mp4")
+from subtitle_resync_helper import gui
 
-while True:
-    time.sleep(1)
-    print(playerx.grabtime())
+app = QApplication(sys.argv)
+window = gui.FormTimemapper(r"D:\temp\srh\src.mkv", r"D:\temp\srh\dst.mkv")
+
+window.show()
+sys.exit(app.exec())
