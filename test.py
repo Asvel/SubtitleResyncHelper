@@ -23,9 +23,6 @@ from subtitle_resync_helper import player, win
 Player = player.getplayer(config.playername)
 
 p = Player(r"D:\temp\srh\dst.mkv")
-#p.grabtime()
-#input()
-
-time.sleep(1)
-win.SendKey(p._mainhwnd, "Ctrl+G")
+time.sleep(2)
+print(p.grabtime())
 input()

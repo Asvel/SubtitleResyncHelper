@@ -158,3 +158,45 @@ def SendKey(hwnd, key):
     if alt: keybd_event(VK_MENU, 0, KEYEVENTF_KEYUP, 0)
     if shift: keybd_event(VK_SHIFT, 0, KEYEVENTF_KEYUP, 0)
     if win: keybd_event(VK_LWIN, 0, KEYEVENTF_KEYUP, 0)
+
+
+def GetTopLevelWindows():
+    windows = []
+    def EnumWindowProc(hwnd, lparam):
+        windows.append(hwnd)
+        return True
+    EnumWindows(EnumWindowProc, None)
+    return windows
+
+
+def GetChildWindows(hwnd):
+    windows = []
+    def EnumChildProc(hwnd, lparam):
+        windows.append(hwnd)
+        return True
+    EnumChildWindows(hwnd, EnumChildProc, None)
+    return windows
+
+
+def FindWindows(class_ = None, title = None, parent = None, process = None,
+                top_level = True, visible_only = True, enabled_only = False):
+    if top_level:
+        windows = GetTopLevelWindows()
+        if parent is not None:
+            windows = [x for x in windows if GetParent(x) == parent]
+    else:
+        if parent is None:
+            parent = GetDesktopWindow()
+        windows = GetChildWindows(parent)
+    if class_ is not None:
+        windows = [x for x in windows if class_ == GetClassName(x)]
+    if title is not None:
+        windows = [x for x in windows if title == GetWindowTextByHwnd(x)]
+    if process is not None:
+        windows = [x for x in windows
+                   if GetWindowThreadProcessId(x)[1] == process]
+    if visible_only:
+        windows = [x for x in windows if IsWindowVisible(x)]
+    if enabled_only:
+        windows = [x for x in windows if IsWindowEnabled(x)]
+    return windows
