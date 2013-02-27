@@ -2,7 +2,8 @@
 
 import sys
 
-from PyQt4.QtGui import QDialog, QKeySequence
+from PyQt4.QtCore import Qt
+from PyQt4.QtGui import QWidget, QKeySequence
 from pygs import QxtGlobalShortcut
 
 from . import config, player
@@ -10,11 +11,13 @@ from .gui_ui import Ui_Form
 
 Player = player.getplayer(config.playername)
 
-class FormTimemapper(QDialog, Ui_Form):
+class FormTimemapper(QWidget, Ui_Form):
 
     def __init__(self, srcfilepath, dstfilepath):
-        QDialog.__init__(self)
+        QWidget.__init__(self)
         self.setupUi(self)
+
+        self.setWindowFlags(self.windowFlags() | Qt.WindowStaysOnTopHint)
 
         self.filepath_src = srcfilepath
         self.filepath_dst = dstfilepath
@@ -27,9 +30,10 @@ class FormTimemapper(QDialog, Ui_Form):
         self.shortcut_addmap.activated.connect(self.shortcut_addmap_activated)
         self.shortcut_addmap.setDisabled()
 
-    def __del__(self):
+    def closeEvent(self, event):
         del self.shortcut_addpart
         del self.shortcut_addmap
+        event.accept()
 
     def ct_switch_clicked(self):
         self.player_src = Player(self.filepath_src)
