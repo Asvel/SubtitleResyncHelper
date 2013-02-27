@@ -180,23 +180,32 @@ def GetChildWindows(hwnd):
 
 def FindWindows(class_ = None, title = None, parent = None, process = None,
                 top_level = True, visible_only = True, enabled_only = False):
+    def try_(func):
+        try:
+            return func()
+        except:
+            return False
+
     if top_level:
         windows = GetTopLevelWindows()
         if parent is not None:
-            windows = [x for x in windows if GetParent(x) == parent]
+            windows = [x for x in windows
+                       if try_(lambda:GetParent(x) == parent)]
     else:
         if parent is None:
             parent = GetDesktopWindow()
         windows = GetChildWindows(parent)
     if class_ is not None:
-        windows = [x for x in windows if class_ == GetClassName(x)]
+        windows = [x for x in windows
+                   if try_(lambda:class_ == GetClassName(x))]
     if title is not None:
-        windows = [x for x in windows if title == GetWindowTextByHwnd(x)]
+        windows = [x for x in windows
+                   if try_(title == GetWindowTextByHwnd(x))]
     if process is not None:
         windows = [x for x in windows
-                   if GetWindowThreadProcessId(x)[1] == process]
+                   if try_(lambda:GetWindowThreadProcessId(x)[1] == process)]
     if visible_only:
-        windows = [x for x in windows if IsWindowVisible(x)]
+        windows = [x for x in windows if try_(lambda:IsWindowVisible(x))]
     if enabled_only:
-        windows = [x for x in windows if IsWindowEnabled(x)]
+        windows = [x for x in windows if try_(lambda:IsWindowEnabled(x))]
     return windows
