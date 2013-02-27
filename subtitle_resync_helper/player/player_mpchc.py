@@ -31,3 +31,10 @@ class PlayerMPCHC(Player):
         time = Time(frame=int(match.group(1)), fps=float(match.group(2)))
         win.SendKey(hwnd, "Esc")
         return time
+
+    def close(self):
+        win.CloseHandle(self._handle)
+        for hwnd in win.FindWindows(parent=self._mainhwnd):
+            win.SendMessage(hwnd, win.WM_CLOSE, 0, 0)
+        win.PostMessage(self._mainhwnd, win.WM_CLOSE, 0, 0)
+        self._closed = True
