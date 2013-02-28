@@ -42,7 +42,7 @@ def GetGUIThreadInfo(idThread):
         return None
 
 
-def GetWindowTextByHwnd(hwnd):
+def GetWindowTextX(hwnd):
     buffer = create_unicode_buffer(100)
     SendMessage(hwnd, WM_GETTEXT, len(buffer), buffer)
     return buffer.value
@@ -200,7 +200,7 @@ def FindWindows(class_ = None, title = None, parent = None, process = None,
                    if try_(lambda:class_ == GetClassName(x))]
     if title is not None:
         windows = [x for x in windows
-                   if try_(title == GetWindowTextByHwnd(x))]
+                   if try_(title == GetWindowTextX(x))]
     if process is not None:
         windows = [x for x in windows
                    if try_(lambda:GetWindowThreadProcessId(x)[1] == process)]

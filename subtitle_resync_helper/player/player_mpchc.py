@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import re
+from time import sleep
 
 from .. import config, win
 from ..retry import retry
@@ -21,15 +22,27 @@ class PlayerMPCHC(Player):
         return win.FindWindow("MPC-HC", None)
 
     def grabtime(self):
+        hwnds = win.FindWindows(class_="#32770", parent=self._mainhwnd)
+        for hwnd in hwnds:
+            win.SendMessage(hwnd, win.WM_CLOSE, 0, 0)
+        if len(hwnds) > 0:
+            sleep(0.1)
         win.SendKey(self._mainhwnd, "Ctrl+G")
-        hwnd = retry(lambda:(win.FindWindows(class_="#32770",
-                                             parent=self._mainhwnd) + [None])[0])
-        edit = retry(lambda:(win.FindWindows(class_='Edit',
-                                             parent=hwnd, top_level=False) + [None])[0])
-        text = win.GetWindowTextByHwnd(edit)
-        match = re.match(r"^(\d+?), (\d+\.?\d*)$", text)
-        time = Time(frame=int(match.group(1)), fps=float(match.group(2)))
-        win.SendKey(hwnd, "Esc")
+        hwnd = retry(lambda:win.FindWindows(
+            class_="#32770", parent=self._mainhwnd)[0], maxcount=6)
+        if hwnd is None:
+            win.SendKey(self._mainhwnd, "Ctrl+G")
+            hwnd = retry(lambda:win.FindWindows(
+                class_="#32770", parent=self._mainhwnd)[0])
+        edit = retry(lambda:win.FindWindows(
+            class_='Edit', parent=hwnd, top_level=False)[0])
+        text = win.GetWindowTextX(edit)
+        try:
+            match = re.match(r"^(\d+?), (\d+\.?\d*)$", text)
+            time = Time(frame=int(match.group(1)), fps=float(match.group(2)))
+        finally:
+            for hwnd in win.FindWindows(class_="#32770", parent=self._mainhwnd):
+                win.SendMessage(hwnd, win.WM_CLOSE, 0, 0)
         return time
 
     def close(self):

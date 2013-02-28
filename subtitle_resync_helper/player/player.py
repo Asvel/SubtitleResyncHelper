@@ -33,7 +33,7 @@ class Player(object):
 
     def grabtime(self):
         hwnd = win.GetGUIThreadInfo(0).hwndFocus
-        text = win.GetWindowTextByHwnd(hwnd).strip()
+        text = win.GetWindowTextX(hwnd).strip()
         try:
             time = self._parse_time(text)
         except:
