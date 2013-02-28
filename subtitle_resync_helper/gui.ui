@@ -43,40 +43,12 @@
     </widget>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="1,0">
-     <item>
-      <widget class="QLabel" name="ct_info"/>
-     </item>
-     <item>
-      <widget class="QPushButton" name="ct_switch">
-       <property name="text">
-        <string>开始</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
+    <widget class="QLabel" name="ct_info"/>
    </item>
   </layout>
  </widget>
  <resources/>
- <connections>
-  <connection>
-   <sender>ct_switch</sender>
-   <signal>clicked()</signal>
-   <receiver>Form</receiver>
-   <slot>ct_switch_clicked()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>132</x>
-     <y>223</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>132</x>
-     <y>255</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
  <slots>
   <slot>ct_switch_clicked()</slot>
  </slots>

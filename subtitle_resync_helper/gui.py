@@ -18,45 +18,29 @@ class FormTimemapper(QWidget, Ui_Form):
         QWidget.__init__(self)
         self.setupUi(self)
         self.setWindowFlags(self.windowFlags() | Qt.WindowStaysOnTopHint)
+        self.move(0, 0)
 
         self.fileinfos = fileinfos
-
-        self.shortcut_addpart = QxtGlobalShortcut(QKeySequence("F4"))
-        self.shortcut_addpart.activated.connect(self.shortcut_addpart_activated)
-        self.shortcut_addpart.setEnabled(False)
-        self.shortcut_addmap = QxtGlobalShortcut(QKeySequence("F5"))
-        self.shortcut_addmap.activated.connect(self.shortcut_addmap_activated)
-        self.shortcut_addmap.setEnabled(False)
-
-        self.started = False
 
         self.ct_table.setRowCount(0)
         self.ct_table.setColumnCount(len(self.fileinfos))
         self.ct_table.horizontalHeader().setResizeMode(
             QHeaderView.ResizeToContents)
 
-        self.move(0, 0)
+    def showEvent(self, event):
+        self.shortcut_addpart = QxtGlobalShortcut(QKeySequence("F4"))
+        self.shortcut_addpart.activated.connect(self.shortcut_addpart_activated)
+        self.shortcut_addmap = QxtGlobalShortcut(QKeySequence("F5"))
+        self.shortcut_addmap.activated.connect(self.shortcut_addmap_activated)
+
+        self.players = [Player(x['path']) for x in self.fileinfos]
 
     def closeEvent(self, event):
         del self.shortcut_addpart
         del self.shortcut_addmap
+        for p in self.players:
+            p.close()
         event.accept()
-
-    def ct_switch_clicked(self):
-        if not self.started:
-            self.ct_switch.setText("停止")
-            self.ct_switch.repaint()
-            self.players = [Player(x['path']) for x in self.fileinfos]
-            self.shortcut_addpart.setEnabled(True)
-            self.shortcut_addmap.setEnabled(True)
-        else:
-            self.ct_switch.setText("开始")
-            self.ct_switch.repaint()
-            for p in self.players:
-                p.close()
-            self.shortcut_addpart.setEnabled(False)
-            self.shortcut_addmap.setEnabled(False)
-        self.started = not self.started
 
     def grabtimes(self, src_only=False):
         count = self.ct_table.rowCount()
