@@ -3,7 +3,7 @@
 import sys
 
 from PyQt4.QtCore import Qt
-from PyQt4.QtGui import QWidget, QKeySequence, QApplication
+from PyQt4.QtGui import QWidget, QKeySequence, QApplication, QTableWidgetItem
 from pygs import QxtGlobalShortcut
 
 from . import config, player
@@ -13,13 +13,12 @@ Player = player.getplayer(config.playername)
 
 class FormTimemapper(QWidget, Ui_Form):
 
-    def __init__(self, srcfilepath, dstfilepath):
+    def __init__(self, fileinfos):
         QWidget.__init__(self)
         self.setupUi(self)
         self.setWindowFlags(self.windowFlags() | Qt.WindowStaysOnTopHint)
 
-        self.filepath_src = srcfilepath
-        self.filepath_dst = dstfilepath
+        self.fileinfos = fileinfos
 
         self.shortcut_addpart = QxtGlobalShortcut(QKeySequence("F4"))
         self.shortcut_addpart.activated.connect(self.shortcut_addpart_activated)
@@ -30,6 +29,9 @@ class FormTimemapper(QWidget, Ui_Form):
 
         self.started = False
 
+        self.ct_table.setRowCount(0)
+        self.ct_table.setColumnCount(len(self.fileinfos))
+
     def closeEvent(self, event):
         del self.shortcut_addpart
         del self.shortcut_addmap
@@ -39,22 +41,30 @@ class FormTimemapper(QWidget, Ui_Form):
         if not self.started:
             self.ct_switch.setText("停止")
             self.ct_switch.repaint()
-            self.player_src = Player(self.filepath_src)
-            self.player_dst = Player(self.filepath_dst)
+            self.players = [Player(x['path']) for x in self.fileinfos]
             self.shortcut_addpart.setEnabled(True)
             self.shortcut_addmap.setEnabled(True)
         else:
             self.ct_switch.setText("开始")
             self.ct_switch.repaint()
-            self.player_src.close()
-            self.player_dst.close()
+            for p in self.players:
+                p.close()
             self.shortcut_addpart.setEnabled(False)
             self.shortcut_addmap.setEnabled(False)
         self.started = not self.started
 
+    def grabtimes(self, src_only=False):
+        count = self.ct_table.rowCount()
+        self.ct_table.setRowCount(count + 1)
+        for i in range(len(self.fileinfos)):
+            if src_only and self.fileinfos[i]['type'] != "src":
+                text = ""
+            else:
+                text = str(self.players[i].grabtime())
+            self.ct_table.setItem(count, i, QTableWidgetItem(text))
+
     def shortcut_addpart_activated(self):
-        self.ct_list.addItem(str([self.player_src.grabtime()]))
+        self.grabtimes(src_only=True)
 
     def shortcut_addmap_activated(self):
-        self.ct_list.addItem(str([self.player_src.grabtime(),
-                                  self.player_dst.grabtime()]))
+        self.grabtimes()

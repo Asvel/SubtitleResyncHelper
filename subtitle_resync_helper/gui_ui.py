@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'gui.ui'
+# Form implementation generated from reading ui file 'C:\project\SubtitleResyncHelper\subtitle_resync_helper\gui.ui'
 #
-# Created: Sun Feb 24 20:50:07 2013
+# Created: Thu Feb 28 13:01:26 2013
 #      by: PyQt4 UI code generator 4.9.6
 #
 # WARNING! All changes made in this file will be lost!
@@ -26,13 +26,24 @@ except AttributeError:
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName(_fromUtf8("Form"))
-        Form.resize(400, 300)
+        Form.resize(400, 200)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(Form.sizePolicy().hasHeightForWidth())
+        Form.setSizePolicy(sizePolicy)
+        self.gridLayout = QtGui.QGridLayout(Form)
+        self.gridLayout.setObjectName(_fromUtf8("gridLayout"))
         self.ct_switch = QtGui.QPushButton(Form)
-        self.ct_switch.setGeometry(QtCore.QRect(10, 210, 251, 23))
         self.ct_switch.setObjectName(_fromUtf8("ct_switch"))
-        self.ct_list = QtGui.QListWidget(Form)
-        self.ct_list.setGeometry(QtCore.QRect(10, 10, 251, 192))
-        self.ct_list.setObjectName(_fromUtf8("ct_list"))
+        self.gridLayout.addWidget(self.ct_switch, 1, 0, 1, 1)
+        self.ct_table = QtGui.QTableWidget(Form)
+        self.ct_table.setObjectName(_fromUtf8("ct_table"))
+        self.ct_table.setColumnCount(0)
+        self.ct_table.setRowCount(0)
+        self.ct_table.verticalHeader().setVisible(False)
+        self.ct_table.verticalHeader().setDefaultSectionSize(20)
+        self.gridLayout.addWidget(self.ct_table, 0, 0, 1, 1)
 
         self.retranslateUi(Form)
         QtCore.QObject.connect(self.ct_switch, QtCore.SIGNAL(_fromUtf8("clicked()")), Form.ct_switch_clicked)
