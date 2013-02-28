@@ -2,17 +2,19 @@
 
 import sys
 
-from PyQt4.QtCore import Qt
+from PyQt4.QtCore import Qt, pyqtSignal
 from PyQt4.QtGui import (QWidget, QKeySequence, QApplication,
                          QTableWidgetItem, QHeaderView)
 from pygs import QxtGlobalShortcut
 
-from . import config, player
+from . import config, player, time
 from .gui_ui import Ui_Form
 
 Player = player.getplayer(config.playername)
 
 class FormTimemapper(QWidget, Ui_Form):
+
+    finished = pyqtSignal(list)
 
     def __init__(self, fileinfos):
         QWidget.__init__(self)
@@ -27,6 +29,8 @@ class FormTimemapper(QWidget, Ui_Form):
         self.ct_table.horizontalHeader().setResizeMode(
             QHeaderView.ResizeToContents)
 
+        self.showinfo("F5获取映射 F4获取分段")
+
     def showEvent(self, event):
         self.shortcut_addpart = QxtGlobalShortcut(QKeySequence("F4"))
         self.shortcut_addpart.activated.connect(self.shortcut_addpart_activated)
@@ -36,24 +40,56 @@ class FormTimemapper(QWidget, Ui_Form):
         self.players = [Player(x['path']) for x in self.fileinfos]
 
     def closeEvent(self, event):
+        event.accept()
+
         del self.shortcut_addpart
         del self.shortcut_addmap
         for p in self.players:
             p.close()
-        event.accept()
+
+        timelist = []
+        for j in range(self.ct_table.columnCount()):
+            timelist.append([time.parse(self.ct_table.item(i, j).text())
+                          for i in range(self.ct_table.rowCount())])
+        self.finished.emit(timelist)
 
     def grabtimes(self, src_only=False):
-        count = self.ct_table.rowCount()
-        self.ct_table.setRowCount(count + 1)
-        for i in range(len(self.fileinfos)):
-            if src_only and self.fileinfos[i]['type'] != "src":
-                text = ""
-            else:
-                text = str(self.players[i].grabtime())
-            self.ct_table.setItem(count, i, QTableWidgetItem(text))
+        self.showinfo("正在获取时间...")
+        try:
+            times = []
+            for i, p in zip(self.fileinfos, self.players):
+                if src_only and i['type'] != "src":
+                    text = None
+                else:
+                    text = str(p.grabtime())
+                times.append(text)
+        except Exception:
+            times = None
+        if times is not None:
+            count = self.ct_table.rowCount()
+            self.ct_table.setRowCount(count + 1)
+            for i in range(len(self.fileinfos)):
+                self.ct_table.setItem(count, i, QTableWidgetItem(times[i]))
+            self.ct_table.setCurrentCell(count, 0)
+            self.showinfo("获取时间成功", type_='success')
+        else:
+            self.showinfo("获取时间失败", type_='error')
 
     def shortcut_addpart_activated(self):
         self.grabtimes(src_only=True)
 
     def shortcut_addmap_activated(self):
         self.grabtimes()
+
+    def showinfo(self, s, type_='normal'):
+        self.ct_info.setText(s)
+        type_ = type_.lower()
+        if type_ == 'normal':
+            self.ct_info.setStyleSheet("")
+        elif type_ == 'success':
+            self.ct_info.setStyleSheet("color:green;")
+        elif type_ == 'warning':
+            self.ct_info.setStyleSheet("color:orange;")
+        elif type_ == 'error':
+            self.ct_info.setStyleSheet("color:red;")
+        self.ct_info.repaint()

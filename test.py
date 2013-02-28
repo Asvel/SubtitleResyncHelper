@@ -17,5 +17,10 @@ window = gui.FormTimemapper([
     {'type':'dst', 'path':r"D:\temp\srh\dst.mkv"},
     ])
 
+def printlist(l):
+    print("\n".join(map(str, l)))
+
+window.finished.connect(printlist)
+
 window.show()
 sys.exit(app.exec())

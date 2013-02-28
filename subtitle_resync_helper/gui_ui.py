@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'C:\project\SubtitleResyncHelper\subtitle_resync_helper\gui.ui'
 #
-# Created: Thu Feb 28 18:32:15 2013
+# Created: Thu Feb 28 23:07:23 2013
 #      by: PyQt4 UI code generator 4.9.6
 #
 # WARNING! All changes made in this file will be lost!
@@ -33,11 +33,12 @@ class Ui_Form(object):
         sizePolicy.setHeightForWidth(Form.sizePolicy().hasHeightForWidth())
         Form.setSizePolicy(sizePolicy)
         self.verticalLayout = QtGui.QVBoxLayout(Form)
-        self.verticalLayout.setSpacing(2)
-        self.verticalLayout.setMargin(2)
+        self.verticalLayout.setSpacing(3)
+        self.verticalLayout.setContentsMargins(2, 2, 2, 3)
         self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
         self.ct_table = QtGui.QTableWidget(Form)
         self.ct_table.setStyleSheet(_fromUtf8("font-family: monospace;"))
+        self.ct_table.setSelectionBehavior(QtGui.QAbstractItemView.SelectRows)
         self.ct_table.setObjectName(_fromUtf8("ct_table"))
         self.ct_table.setColumnCount(0)
         self.ct_table.setRowCount(0)
