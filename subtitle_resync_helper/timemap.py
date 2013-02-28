@@ -2,7 +2,7 @@
 
 import logging
 
-from .time import Time
+from subtitle_resync_helper.time import Time
 
 
 def normalize(timemap, endcheck=False):

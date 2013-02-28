@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
-from .. import win
-from .player_mpchc import PlayerMPCHC as Player
+from subtitle_resync_helper import win
+from subtitle_resync_helper.player.player_mpchc import PlayerMPCHC as Player
 
 
 class PlayerMPCBE(Player):

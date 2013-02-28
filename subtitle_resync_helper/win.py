@@ -11,6 +11,7 @@ from win32process import *
 from PyQt4.QtGui import QKeySequence
 from PyQt4.QtCore import Qt
 
+
 def GetProcessHandleByProcessId(pid):
     return OpenProcess(PROCESS_QUERY_INFORMATION, False, pid)
 

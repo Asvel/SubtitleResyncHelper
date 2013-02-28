@@ -3,10 +3,10 @@
 import re
 from time import sleep
 
-from .. import config, win
-from ..retry import retry
-from ..time import Time
-from .player import Player
+from subtitle_resync_helper import config, win
+from subtitle_resync_helper.retry import retry
+from subtitle_resync_helper.time import Time
+from subtitle_resync_helper.player.player import Player
 
 
 class PlayerMPCHC(Player):

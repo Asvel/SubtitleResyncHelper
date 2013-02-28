@@ -2,7 +2,7 @@
 
 import logging
 
-from .time import Time
+from subtitle_resync_helper.time import Time
 
 SHIFT_STOP = 0      # 停止并返回
 SHIFT_APART = 1     # 分别按各自的调整量调整

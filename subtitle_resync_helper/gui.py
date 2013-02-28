@@ -7,8 +7,8 @@ from PyQt4.QtGui import (QWidget, QKeySequence, QApplication,
                          QTableWidgetItem, QHeaderView)
 from pygs import QxtGlobalShortcut
 
-from . import config, player, time
-from .gui_ui import Ui_Form
+from subtitle_resync_helper import config, player, time
+from subtitle_resync_helper.gui_ui import Ui_Form
 
 Player = player.getplayer(config.playername)
 
