@@ -3,7 +3,8 @@
 import sys
 
 from PyQt4.QtCore import Qt
-from PyQt4.QtGui import QWidget, QKeySequence, QApplication, QTableWidgetItem
+from PyQt4.QtGui import (QWidget, QKeySequence, QApplication,
+                         QTableWidgetItem, QHeaderView)
 from pygs import QxtGlobalShortcut
 
 from . import config, player
@@ -31,6 +32,10 @@ class FormTimemapper(QWidget, Ui_Form):
 
         self.ct_table.setRowCount(0)
         self.ct_table.setColumnCount(len(self.fileinfos))
+        self.ct_table.horizontalHeader().setResizeMode(
+            QHeaderView.ResizeToContents)
+
+        self.move(0, 0)
 
     def closeEvent(self, event):
         del self.shortcut_addpart

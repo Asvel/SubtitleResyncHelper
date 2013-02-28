@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'C:\project\SubtitleResyncHelper\subtitle_resync_helper\gui.ui'
 #
-# Created: Thu Feb 28 13:01:26 2013
+# Created: Thu Feb 28 18:30:06 2013
 #      by: PyQt4 UI code generator 4.9.6
 #
 # WARNING! All changes made in this file will be lost!
@@ -26,30 +26,41 @@ except AttributeError:
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName(_fromUtf8("Form"))
-        Form.resize(400, 200)
+        Form.resize(160, 102)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(Form.sizePolicy().hasHeightForWidth())
         Form.setSizePolicy(sizePolicy)
-        self.gridLayout = QtGui.QGridLayout(Form)
-        self.gridLayout.setObjectName(_fromUtf8("gridLayout"))
-        self.ct_switch = QtGui.QPushButton(Form)
-        self.ct_switch.setObjectName(_fromUtf8("ct_switch"))
-        self.gridLayout.addWidget(self.ct_switch, 1, 0, 1, 1)
+        self.verticalLayout = QtGui.QVBoxLayout(Form)
+        self.verticalLayout.setSpacing(2)
+        self.verticalLayout.setMargin(2)
+        self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
         self.ct_table = QtGui.QTableWidget(Form)
+        self.ct_table.setStyleSheet(_fromUtf8("font-family: monospace;"))
         self.ct_table.setObjectName(_fromUtf8("ct_table"))
         self.ct_table.setColumnCount(0)
         self.ct_table.setRowCount(0)
+        self.ct_table.horizontalHeader().setVisible(False)
         self.ct_table.verticalHeader().setVisible(False)
         self.ct_table.verticalHeader().setDefaultSectionSize(20)
-        self.gridLayout.addWidget(self.ct_table, 0, 0, 1, 1)
+        self.verticalLayout.addWidget(self.ct_table)
+        self.horizontalLayout_3 = QtGui.QHBoxLayout()
+        self.horizontalLayout_3.setObjectName(_fromUtf8("horizontalLayout_3"))
+        self.ct_info = QtGui.QLabel(Form)
+        self.ct_info.setObjectName(_fromUtf8("ct_info"))
+        self.horizontalLayout_3.addWidget(self.ct_info)
+        self.ct_switch = QtGui.QPushButton(Form)
+        self.ct_switch.setObjectName(_fromUtf8("ct_switch"))
+        self.horizontalLayout_3.addWidget(self.ct_switch)
+        self.horizontalLayout_3.setStretch(0, 1)
+        self.verticalLayout.addLayout(self.horizontalLayout_3)
 
         self.retranslateUi(Form)
         QtCore.QObject.connect(self.ct_switch, QtCore.SIGNAL(_fromUtf8("clicked()")), Form.ct_switch_clicked)
         QtCore.QMetaObject.connectSlotsByName(Form)
 
     def retranslateUi(self, Form):
-        Form.setWindowTitle(_translate("Form", "Form", None))
+        Form.setWindowTitle(_translate("Form", " ", None))
         self.ct_switch.setText(_translate("Form", "开始", None))
 
