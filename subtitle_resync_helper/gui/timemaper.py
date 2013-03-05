@@ -6,17 +6,17 @@ from PyQt4.QtGui import (QWidget, QKeySequence, QApplication,
 from pygs import QxtGlobalShortcut
 
 from subtitle_resync_helper import config, player, time
-from subtitle_resync_helper.gui.timemaper_ui import Ui_Form
+from subtitle_resync_helper.gui.timemaper_ui import Ui_FormTimeMapper
 
 
 Player = player.getplayer(config.playername)
 
-class FormTimemapper(QWidget, Ui_Form):
+class FormTimeMapper(QWidget, Ui_FormTimeMapper):
 
     finished = pyqtSignal(list)
 
     def __init__(self, fileinfos):
-        QWidget.__init__(self)
+        super(FormTimeMapper, self).__init__()
         self.setupUi(self)
         self.setWindowFlags(self.windowFlags() | Qt.WindowStaysOnTopHint)
         self.move(0, 0)

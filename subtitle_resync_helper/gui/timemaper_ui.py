@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'gui/timemaper.ui'
 #
-# Created: Tue Mar  5 12:43:47 2013
+# Created: Wed Mar  6 14:11:29 2013
 #      by: PyQt4 UI code generator 4.9.6
 #
 # WARNING! All changes made in this file will be lost!
@@ -23,20 +23,20 @@ except AttributeError:
     def _translate(context, text, disambig):
         return QtGui.QApplication.translate(context, text, disambig)
 
-class Ui_Form(object):
-    def setupUi(self, Form):
-        Form.setObjectName(_fromUtf8("Form"))
-        Form.resize(160, 102)
+class Ui_FormTimeMapper(object):
+    def setupUi(self, FormTimeMapper):
+        FormTimeMapper.setObjectName(_fromUtf8("FormTimeMapper"))
+        FormTimeMapper.resize(160, 102)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(Form.sizePolicy().hasHeightForWidth())
-        Form.setSizePolicy(sizePolicy)
-        self.verticalLayout = QtGui.QVBoxLayout(Form)
+        sizePolicy.setHeightForWidth(FormTimeMapper.sizePolicy().hasHeightForWidth())
+        FormTimeMapper.setSizePolicy(sizePolicy)
+        self.verticalLayout = QtGui.QVBoxLayout(FormTimeMapper)
         self.verticalLayout.setSpacing(3)
         self.verticalLayout.setContentsMargins(2, 2, 2, 3)
         self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
-        self.ct_table = QtGui.QTableWidget(Form)
+        self.ct_table = QtGui.QTableWidget(FormTimeMapper)
         self.ct_table.setStyleSheet(_fromUtf8("font-family: monospace;"))
         self.ct_table.setSelectionBehavior(QtGui.QAbstractItemView.SelectRows)
         self.ct_table.setObjectName(_fromUtf8("ct_table"))
@@ -46,13 +46,13 @@ class Ui_Form(object):
         self.ct_table.verticalHeader().setVisible(False)
         self.ct_table.verticalHeader().setDefaultSectionSize(20)
         self.verticalLayout.addWidget(self.ct_table)
-        self.ct_info = QtGui.QLabel(Form)
+        self.ct_info = QtGui.QLabel(FormTimeMapper)
         self.ct_info.setObjectName(_fromUtf8("ct_info"))
         self.verticalLayout.addWidget(self.ct_info)
 
-        self.retranslateUi(Form)
-        QtCore.QMetaObject.connectSlotsByName(Form)
+        self.retranslateUi(FormTimeMapper)
+        QtCore.QMetaObject.connectSlotsByName(FormTimeMapper)
 
-    def retranslateUi(self, Form):
-        Form.setWindowTitle(_translate("Form", " ", None))
+    def retranslateUi(self, FormTimeMapper):
+        FormTimeMapper.setWindowTitle(_translate("FormTimeMapper", "时间映射", None))
 
