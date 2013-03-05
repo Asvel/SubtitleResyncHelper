@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'C:\project\SubtitleResyncHelper\subtitle_resync_helper\gui.ui'
+# Form implementation generated from reading ui file 'gui/timemaper.ui'
 #
-# Created: Thu Feb 28 23:07:23 2013
+# Created: Tue Mar  5 12:43:47 2013
 #      by: PyQt4 UI code generator 4.9.6
 #
 # WARNING! All changes made in this file will be lost!

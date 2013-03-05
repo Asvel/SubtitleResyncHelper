@@ -35,6 +35,10 @@ class FormTimemapper(QWidget, Ui_Form):
         self.shortcut_addpart.activated.connect(self.shortcut_addpart_activated)
         self.shortcut_addmap = QxtGlobalShortcut(QKeySequence("F5"))
         self.shortcut_addmap.activated.connect(self.shortcut_addmap_activated)
+        self.shortcut_dellast = QxtGlobalShortcut(QKeySequence("F9"))
+        self.shortcut_dellast.activated.connect(self.shortcut_dellast_activated)
+        self.shortcut_finish = QxtGlobalShortcut(QKeySequence("F11"))
+        self.shortcut_finish.activated.connect(self.shortcut_finish_activated)
 
         self.players = [Player(x['path']) for x in self.fileinfos]
 
@@ -43,6 +47,8 @@ class FormTimemapper(QWidget, Ui_Form):
 
         del self.shortcut_addpart
         del self.shortcut_addmap
+        del self.shortcut_dellast
+        del self.shortcut_finish
         for p in self.players:
             p.close()
 
@@ -79,6 +85,12 @@ class FormTimemapper(QWidget, Ui_Form):
 
     def shortcut_addmap_activated(self):
         self.grabtimes()
+
+    def shortcut_dellast_activated(self):
+        self.ct_table.removeRow(self.ct_table.rowCount() - 1)
+
+    def shortcut_finish_activated(self):
+        self.close()
 
     def showinfo(self, s, type_='normal'):
         self.ct_info.setText(s)
