@@ -12,15 +12,7 @@ config.playername = "MPCBE"
 from subtitle_resync_helper import gui
 
 app = QApplication(sys.argv)
-window = gui.FormTimeMapper([
-    {'type':'src', 'path':r"D:\temp\srh\src.mkv"},
-    {'type':'dst', 'path':r"D:\temp\srh\dst.mkv"},
-    ])
-
-def printlist(l):
-    print("\n".join(map(str, l)))
-
-window.finished.connect(printlist)
+window = gui.FormMain()
 
 window.show()
 sys.exit(app.exec())
