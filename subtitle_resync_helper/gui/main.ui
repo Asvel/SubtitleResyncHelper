@@ -75,6 +75,11 @@
             <string>目标文件</string>
            </property>
           </column>
+          <item>
+           <property name="text">
+            <string>添加...</string>
+           </property>
+          </item>
          </widget>
         </item>
        </layout>
@@ -182,6 +187,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>ct_tree_dst</sender>
+   <signal>itemClicked(QTreeWidgetItem*,int)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>ct_tree_dst_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>26</x>
+     <y>443</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>2</x>
+     <y>442</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>ct_add_src_clicked()</slot>
@@ -190,5 +211,6 @@
   <slot>ct_tree_src_clicked()</slot>
   <slot>ct_tree_itemexpanded()</slot>
   <slot>ct_tree_itemcollapsed()</slot>
+  <slot>ct_tree_dst_clicked()</slot>
  </slots>
 </ui>

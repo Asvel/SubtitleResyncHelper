@@ -36,7 +36,7 @@ class FormMain(QMainWindow, Ui_MainWindow):
             qtreewidget.insertTopLevelItem(
                 qtreewidget.topLevelItemCount() - 1, qitem)
 
-    def addfiles_src(self):
+    def addfiles_src(self, qtree):
         fileext_video = config.fileext_video
         fileext_subtitle = config.fileext_subtitle
 
@@ -54,7 +54,7 @@ class FormMain(QMainWindow, Ui_MainWindow):
         for i in reversed(range(len(filelist))):
             if os.path.splitext(filelist[i])[1][1:] in fileext_subtitle:
                 filelist_subtitle.insert(0, filelist.pop(i))
-        items, order = self.qtreewidegt_getitems(self.ct_tree_src)
+        items, order = self.qtreewidegt_getitems(qtree)
         for filename in filelist:
             if filename not in items:
                 items[filename] = set()
@@ -64,16 +64,42 @@ class FormMain(QMainWindow, Ui_MainWindow):
                 if subtitle.startswith(os.path.splitext(video)[0]):
                     items[video].add(subtitle)
                     break
-        self.qtreewidegt_setitems(self.ct_tree_src, items, order)
-        self.ct_tree_src.resizeColumnToContents(0)
+        self.qtreewidegt_setitems(qtree, items, order)
+        qtree.resizeColumnToContents(0)
+
+    def addfiles_dst(self, qtree):
+        fileext_video = config.fileext_video
+
+        filter_video = " ".join(["*." + x for x in fileext_video])
+        filedialog_filter = "视频 ({})".format(filter_video)
+        filelist = QFileDialog.getOpenFileNames(self, "选择目标文件",
+            config.filedialog_lastdir, filedialog_filter)
+        if len(filelist) > 0:
+            config.filedialog_lastdir = os.path.dirname(filelist[0])
+
+        items, order = self.qtreewidegt_getitems(qtree)
+        for filename in filelist:
+            if filename not in items:
+                items[filename] = set()
+                order.append(filename)
+        self.qtreewidegt_setitems(qtree, items, order)
+        qtree.resizeColumnToContents(0)
+
+    def start_resync(self):
+        pass
 
     def ct_start_clicked(self):
-        print('start')
+        self.start_resync()
 
     def ct_tree_src_clicked(self, item, column):
-        if self.ct_tree_src.indexOfTopLevelItem(item) + 1 == \
-                self.ct_tree_src.topLevelItemCount():
-            self.addfiles_src()
+        qtree = self.sender()
+        if qtree.indexOfTopLevelItem(item) + 1 == qtree.topLevelItemCount():
+            self.addfiles_src(qtree)
+
+    def ct_tree_dst_clicked(self, item, column):
+        qtree = self.sender()
+        if qtree.indexOfTopLevelItem(item) + 1 == qtree.topLevelItemCount():
+            self.addfiles_dst(qtree)
 
     def ct_tree_itemexpanded(self, item):
         self.sender().resizeColumnToContents(0)

@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'main.ui'
 #
-# Created: Sat Mar 16 17:50:20 2013
+# Created: Sat Mar 16 18:03:17 2013
 #      by: PyQt4 UI code generator 4.9.6
 #
 # WARNING! All changes made in this file will be lost!
@@ -51,6 +51,7 @@ class Ui_MainWindow(object):
         self.ct_tree_dst = QtGui.QTreeWidget(self.scrollAreaWidgetContents)
         self.ct_tree_dst.setMinimumSize(QtCore.QSize(0, 200))
         self.ct_tree_dst.setObjectName(_fromUtf8("ct_tree_dst"))
+        item_0 = QtGui.QTreeWidgetItem(self.ct_tree_dst)
         self.verticalLayout_3.addWidget(self.ct_tree_dst)
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
         self.verticalLayout.addWidget(self.scrollArea)
@@ -80,6 +81,7 @@ class Ui_MainWindow(object):
         QtCore.QObject.connect(self.ct_tree_src, QtCore.SIGNAL(_fromUtf8("itemClicked(QTreeWidgetItem*,int)")), MainWindow.ct_tree_src_clicked)
         QtCore.QObject.connect(self.ct_tree_src, QtCore.SIGNAL(_fromUtf8("itemExpanded(QTreeWidgetItem*)")), MainWindow.ct_tree_itemexpanded)
         QtCore.QObject.connect(self.ct_tree_src, QtCore.SIGNAL(_fromUtf8("collapsed(QModelIndex)")), MainWindow.ct_tree_itemcollapsed)
+        QtCore.QObject.connect(self.ct_tree_dst, QtCore.SIGNAL(_fromUtf8("itemClicked(QTreeWidgetItem*,int)")), MainWindow.ct_tree_dst_clicked)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
         MainWindow.setTabOrder(self.scrollArea, self.ct_start)
 
@@ -91,5 +93,9 @@ class Ui_MainWindow(object):
         self.ct_tree_src.topLevelItem(0).setText(0, _translate("MainWindow", "添加...", None))
         self.ct_tree_src.setSortingEnabled(__sortingEnabled)
         self.ct_tree_dst.headerItem().setText(0, _translate("MainWindow", "目标文件", None))
+        __sortingEnabled = self.ct_tree_dst.isSortingEnabled()
+        self.ct_tree_dst.setSortingEnabled(False)
+        self.ct_tree_dst.topLevelItem(0).setText(0, _translate("MainWindow", "添加...", None))
+        self.ct_tree_dst.setSortingEnabled(__sortingEnabled)
         self.ct_start.setText(_translate("MainWindow", "开始", None))
 
