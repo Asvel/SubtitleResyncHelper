@@ -35,5 +35,8 @@ nosetests.xml
 .project
 .pydevproject
 
-#PyCharm
+# PyCharm
 .idea/
+
+# Config
+config.json
