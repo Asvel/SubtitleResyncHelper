@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import os
+from collections import OrderedDict
 
 from PyQt4.QtCore import Qt, pyqtSignal
 from PyQt4.QtGui import QMainWindow, QFileDialog, QTreeWidgetItem, QMessageBox
@@ -22,19 +23,17 @@ class FormMain(QMainWindow, Ui_MainWindow):
         ]
 
     def qtreewidegt_getitems(self, qtreewidget):
-        items = {}
-        order = []
+        items = OrderedDict()
         for i in range(qtreewidget.topLevelItemCount() - 1):
             qitem = qtreewidget.topLevelItem(i)
             items[qitem.text(0)] = {qitem.child(i).text(0)
                                    for i in range(qitem.childCount())}
-            order.append(qitem.text(0))
-        return items, order
+        return items
 
-    def qtreewidegt_setitems(self, qtreewidget, items, order):
+    def qtreewidegt_setitems(self, qtreewidget, items):
         for i in reversed(range(qtreewidget.topLevelItemCount() - 1)):
             qtreewidget.takeTopLevelItem(i)
-        for parent in order:
+        for parent in items:
             children = sorted(items[parent])
             qitem = QTreeWidgetItem([parent])
             for child in children:
@@ -60,17 +59,16 @@ class FormMain(QMainWindow, Ui_MainWindow):
         for i in reversed(range(len(filelist))):
             if os.path.splitext(filelist[i])[1][1:] in fileext_subtitle:
                 filelist_subtitle.insert(0, filelist.pop(i))
-        items, order = self.qtreewidegt_getitems(qtree)
+        items = self.qtreewidegt_getitems(qtree)
         for filename in filelist:
             if filename not in items:
                 items[filename] = set()
-                order.append(filename)
         for subtitle in filelist_subtitle:
-            for video in order:
+            for video in items:
                 if subtitle.startswith(os.path.splitext(video)[0]):
                     items[video].add(subtitle)
                     break
-        self.qtreewidegt_setitems(qtree, items, order)
+        self.qtreewidegt_setitems(qtree, items)
         qtree.resizeColumnToContents(0)
 
     def addfiles_dst(self, qtree):
