@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from PyQt4.QtCore import Qt, pyqtSignal
-from PyQt4.QtGui import (QWidget, QKeySequence, QApplication,
+from PyQt4.QtGui import (QDialog, QKeySequence, QApplication,
                          QTableWidgetItem, QHeaderView)
 from pygs import QxtGlobalShortcut
 
@@ -11,17 +11,19 @@ from subtitle_resync_helper.gui.timemaper_ui import Ui_FormTimeMapper
 
 Player = player.getplayer(config.playername)
 
-class FormTimeMapper(QWidget, Ui_FormTimeMapper):
+class FormTimeMapper(QDialog, Ui_FormTimeMapper):
 
     finished = pyqtSignal(list)
 
-    def __init__(self, fileinfos):
+    def __init__(self, fileinfos, callback=None):
         super(FormTimeMapper, self).__init__()
         self.setupUi(self)
         self.setWindowFlags(self.windowFlags() | Qt.WindowStaysOnTopHint)
         self.move(0, 0)
 
         self.fileinfos = fileinfos
+        if callback is not None:
+            self.finished.connect(callback)
 
         self.ct_table.setRowCount(0)
         self.ct_table.setColumnCount(len(self.fileinfos))
@@ -52,11 +54,11 @@ class FormTimeMapper(QWidget, Ui_FormTimeMapper):
         for p in self.players:
             p.close()
 
-        timelist = []
+        self.timemap = []
         for j in range(self.ct_table.columnCount()):
-            timelist.append([time.parse(self.ct_table.item(i, j).text())
+            self.timemap.append([time.parse(self.ct_table.item(i, j).text())
                           for i in range(self.ct_table.rowCount())])
-        self.finished.emit(timelist)
+        self.finished.emit(self.timemap)
 
     def grabtimes(self, src_only=False):
         self.showinfo("正在获取时间...")

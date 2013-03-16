@@ -3,9 +3,10 @@
 import os
 
 from PyQt4.QtCore import Qt, pyqtSignal
-from PyQt4.QtGui import QMainWindow, QKeySequence, QFileDialog, QTreeWidgetItem
+from PyQt4.QtGui import QMainWindow, QFileDialog, QTreeWidgetItem, QMessageBox
 
-from subtitle_resync_helper import config, player, time
+from subtitle_resync_helper import config
+from subtitle_resync_helper.gui.timemaper import FormTimeMapper
 from subtitle_resync_helper.gui.main_ui import Ui_MainWindow
 
 
@@ -14,6 +15,11 @@ class FormMain(QMainWindow, Ui_MainWindow):
     def __init__(self):
         super(FormMain, self).__init__()
         self.setupUi(self)
+
+        self.ct_trees = [
+            {'type':'src', 'obj':self.ct_tree_src},
+            {'type':'dst', 'obj':self.ct_tree_dst},
+        ]
 
     def qtreewidegt_getitems(self, qtreewidget):
         items = {}
@@ -86,7 +92,18 @@ class FormMain(QMainWindow, Ui_MainWindow):
         qtree.resizeColumnToContents(0)
 
     def start_resync(self):
-        pass
+        video_counts = [x['obj'].topLevelItemCount()-1 for x in self.ct_trees]
+        video_count = min(video_counts)
+        if video_count != max(video_counts):
+            QMessageBox.warning(self, "警告", "列表中视频数不同")
+
+        for i in range(video_count):
+            qitems = [x['obj'].topLevelItem(i) for x in self.ct_trees]
+            files = [x.text(0) for x in qitems]
+            timemapper = FormTimeMapper([{'type':q['type'], 'path':p}
+                for q, p in zip(self.ct_trees, files)])
+            timemapper.exec()
+            print(timemapper.timemap)
 
     def ct_start_clicked(self):
         self.start_resync()
