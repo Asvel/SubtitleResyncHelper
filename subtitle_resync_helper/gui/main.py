@@ -54,20 +54,16 @@ class FormMain(QMainWindow, Ui_MainWindow):
         for i in reversed(range(len(filelist))):
             if os.path.splitext(filelist[i])[1][1:] in fileext_subtitle:
                 filelist_subtitle.insert(0, filelist.pop(i))
-
         items, order = self.qtreewidegt_getitems(self.ct_tree_src)
-
         for filename in filelist:
             if filename not in items:
                 items[filename] = set()
                 order.append(filename)
-
         for subtitle in filelist_subtitle:
             for video in order:
                 if subtitle.startswith(os.path.splitext(video)[0]):
                     items[video].add(subtitle)
                     break
-
         self.qtreewidegt_setitems(self.ct_tree_src, items, order)
         self.ct_tree_src.resizeColumnToContents(0)
 
@@ -78,3 +74,9 @@ class FormMain(QMainWindow, Ui_MainWindow):
         if self.ct_tree_src.indexOfTopLevelItem(item) + 1 == \
                 self.ct_tree_src.topLevelItemCount():
             self.addfiles_src()
+
+    def ct_tree_itemexpanded(self, item):
+        self.sender().resizeColumnToContents(0)
+
+    def ct_tree_itemcollapsed(self, item):
+        self.sender().resizeColumnToContents(0)

@@ -150,11 +150,45 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>ct_tree_src</sender>
+   <signal>itemExpanded(QTreeWidgetItem*)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>ct_tree_itemexpanded()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>12</x>
+     <y>124</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>3</x>
+     <y>124</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>ct_tree_src</sender>
+   <signal>collapsed(QModelIndex)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>ct_tree_itemcollapsed()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>14</x>
+     <y>106</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>-1</x>
+     <y>106</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>ct_add_src_clicked()</slot>
   <slot>ct_add_dst_clicked()</slot>
   <slot>ct_start_clicked()</slot>
   <slot>ct_tree_src_clicked()</slot>
+  <slot>ct_tree_itemexpanded()</slot>
+  <slot>ct_tree_itemcollapsed()</slot>
  </slots>
 </ui>

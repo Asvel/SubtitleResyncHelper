@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'main.ui'
 #
-# Created: Fri Mar  8 23:37:58 2013
+# Created: Sat Mar 16 17:50:20 2013
 #      by: PyQt4 UI code generator 4.9.6
 #
 # WARNING! All changes made in this file will be lost!
@@ -78,6 +78,8 @@ class Ui_MainWindow(object):
         self.retranslateUi(MainWindow)
         QtCore.QObject.connect(self.ct_start, QtCore.SIGNAL(_fromUtf8("clicked()")), MainWindow.ct_start_clicked)
         QtCore.QObject.connect(self.ct_tree_src, QtCore.SIGNAL(_fromUtf8("itemClicked(QTreeWidgetItem*,int)")), MainWindow.ct_tree_src_clicked)
+        QtCore.QObject.connect(self.ct_tree_src, QtCore.SIGNAL(_fromUtf8("itemExpanded(QTreeWidgetItem*)")), MainWindow.ct_tree_itemexpanded)
+        QtCore.QObject.connect(self.ct_tree_src, QtCore.SIGNAL(_fromUtf8("collapsed(QModelIndex)")), MainWindow.ct_tree_itemcollapsed)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
         MainWindow.setTabOrder(self.scrollArea, self.ct_start)
 
