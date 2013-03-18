@@ -3,10 +3,11 @@
 import os
 from collections import OrderedDict, namedtuple
 
+import pysubs
 from PyQt4.QtCore import Qt, pyqtSignal
 from PyQt4.QtGui import QMainWindow, QFileDialog, QTreeWidgetItem, QMessageBox
 
-from subtitle_resync_helper import config
+from subtitle_resync_helper import config, timemap, shifter
 from subtitle_resync_helper.gui.timemaper import FormTimeMapper
 from subtitle_resync_helper.gui.main_ui import Ui_MainWindow
 
@@ -100,6 +101,45 @@ class FormMain(QMainWindow, Ui_MainWindow):
             timemapper = FormTimeMapper(types, videos)
             timemapper.exec()
             print(timemapper.timemap)
+
+            videos_src = []
+            videos_dst = []
+            timelists_src = []
+            timelists_dst = []
+            subtitless_src = []
+            for type, tree, video, timelist in \
+                zip(types, trees, videos, timemapper.timemap):
+                if type == 'src':
+                    videos_src.append(video)
+                    timelists_src.append(timelist)
+                    subtitless_src.append(tree[video])
+                else: # type == 'dst'
+                    videos_dst.append(video)
+                    timelists_dst.append(timelist)
+
+            for video_dst, timelist_dst in zip(videos_dst, timelists_dst):
+                for video_src, timelist_src, subtitles_src in \
+                    zip(videos_src, timelists_src, subtitless_src):
+                    timedelta = timemap.normalize(
+                        zip(timelist_src, timelist_dst))
+                    for sub_src in subtitles_src:
+                        video_src_mainname = os.path.splitext(
+                            os.path.split(video_src)[1])[0]
+                        sub_src_name = os.path.split(sub_src)[1]
+                        video_dst_mainname = os.path.splitext(
+                            os.path.split(video_dst)[1])[0]
+                        if sub_src_name.startswith(video_src_mainname):
+                            sub_dst_name = video_dst_mainname + \
+                                sub_src_name[len(video_src_mainname):]
+                        else:
+                            sub_dst_name = sub_src_name
+                        sub_dst = os.path.join(os.path.dirname(video_dst),
+                            sub_dst_name)
+
+                        subs = pysubs.load(sub_src)
+                        shifter.shift(subs, timedelta)
+                        subs.save(sub_dst)
+
 
     def ct_start_clicked(self):
         self.start_resync()
