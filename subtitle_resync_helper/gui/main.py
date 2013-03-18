@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import os
-from collections import OrderedDict
+from collections import OrderedDict, namedtuple
 
 from PyQt4.QtCore import Qt, pyqtSignal
 from PyQt4.QtGui import QMainWindow, QFileDialog, QTreeWidgetItem, QMessageBox
@@ -18,8 +18,8 @@ class FormMain(QMainWindow, Ui_MainWindow):
         self.setupUi(self)
 
         self.ct_trees = [
-            {'type':'src', 'obj':self.ct_tree_src},
-            {'type':'dst', 'obj':self.ct_tree_dst},
+            ('src', self.ct_tree_src),
+            ('dst', self.ct_tree_dst),
         ]
 
     def qtreewidegt_getitems(self, qtreewidget):
@@ -81,25 +81,23 @@ class FormMain(QMainWindow, Ui_MainWindow):
         if len(filelist) > 0:
             config.filedialog_lastdir = os.path.dirname(filelist[0])
 
-        items, order = self.qtreewidegt_getitems(qtree)
+        items = self.qtreewidegt_getitems(qtree)
         for filename in filelist:
             if filename not in items:
                 items[filename] = set()
-                order.append(filename)
-        self.qtreewidegt_setitems(qtree, items, order)
+        self.qtreewidegt_setitems(qtree, items)
         qtree.resizeColumnToContents(0)
 
     def start_resync(self):
-        video_counts = [x['obj'].topLevelItemCount()-1 for x in self.ct_trees]
+        types, trees = zip(*self.ct_trees)
+        trees = [self.qtreewidegt_getitems(x) for x in trees]
+        video_counts = [len(x) for x in trees]
         video_count = min(video_counts)
         if video_count != max(video_counts):
             QMessageBox.warning(self, "警告", "列表中视频数不同")
 
-        for i in range(video_count):
-            qitems = [x['obj'].topLevelItem(i) for x in self.ct_trees]
-            files = [x.text(0) for x in qitems]
-            timemapper = FormTimeMapper([{'type':q['type'], 'path':p}
-                for q, p in zip(self.ct_trees, files)])
+        for videos in zip(*trees):
+            timemapper = FormTimeMapper(types, videos)
             timemapper.exec()
             print(timemapper.timemap)
 

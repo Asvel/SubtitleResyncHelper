@@ -15,18 +15,19 @@ class FormTimeMapper(QDialog, Ui_FormTimeMapper):
 
     finished = pyqtSignal(list)
 
-    def __init__(self, fileinfos, callback=None):
+    def __init__(self, filetypes, filepaths, callback=None):
         super(FormTimeMapper, self).__init__()
         self.setupUi(self)
         self.setWindowFlags(self.windowFlags() | Qt.WindowStaysOnTopHint)
         self.move(0, 0)
 
-        self.fileinfos = fileinfos
+        self.filetypes = filetypes
+        self.filepaths = filepaths
         if callback is not None:
             self.finished.connect(callback)
 
         self.ct_table.setRowCount(0)
-        self.ct_table.setColumnCount(len(self.fileinfos))
+        self.ct_table.setColumnCount(len(self.filepaths))
         self.ct_table.horizontalHeader().setResizeMode(
             QHeaderView.ResizeToContents)
 
@@ -42,7 +43,7 @@ class FormTimeMapper(QDialog, Ui_FormTimeMapper):
         self.shortcut_finish = QxtGlobalShortcut(QKeySequence("F11"))
         self.shortcut_finish.activated.connect(self.shortcut_finish_activated)
 
-        self.players = [Player(x['path']) for x in self.fileinfos]
+        self.players = [Player(x) for x in self.filepaths]
 
     def closeEvent(self, event):
         event.accept()
@@ -64,18 +65,18 @@ class FormTimeMapper(QDialog, Ui_FormTimeMapper):
         self.showinfo("正在获取时间...")
         try:
             times = []
-            for i, p in zip(self.fileinfos, self.players):
-                if src_only and i['type'] != "src":
+            for type, player in zip(self.filetypes, self.players):
+                if src_only and type != "src":
                     text = None
                 else:
-                    text = str(p.grabtime())
+                    text = str(player.grabtime())
                 times.append(text)
         except Exception:
             times = None
         if times is not None:
             count = self.ct_table.rowCount()
             self.ct_table.setRowCount(count + 1)
-            for i in range(len(self.fileinfos)):
+            for i in range(len(self.players)):
                 self.ct_table.setItem(count, i, QTableWidgetItem(times[i]))
             self.ct_table.setCurrentCell(count, 0)
             self.showinfo("获取时间成功", type_='success')
