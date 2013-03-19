@@ -4,9 +4,8 @@ import time
 
 
 def retry(func, initdelay=0.01, maxcount=10):
-    count = 0
     ret = None
-    while count < maxcount:
+    for count in range(maxcount):
         time.sleep(initdelay * (2 ** count))
         try:
             ret = func()
@@ -14,5 +13,4 @@ def retry(func, initdelay=0.01, maxcount=10):
             pass
         if ret is not None:
             break
-        count += 1
     return ret
