@@ -43,7 +43,7 @@ class FormMain(QMainWindow, Ui_MainWindow):
             qtreewidget.insertTopLevelItem(
                 qtreewidget.topLevelItemCount(), qitem)
 
-    def addfiles_src(self, qtree):
+    def appenditems_src(self, qtree):
         fileext_video = config.fileext_video
         fileext_subtitle = config.fileext_subtitle
 
@@ -73,7 +73,7 @@ class FormMain(QMainWindow, Ui_MainWindow):
         self.qtreewidegt_setitems(qtree, items)
         qtree.resizeColumnToContents(0)
 
-    def addfiles_dst(self, qtree):
+    def appenditems_dst(self, qtree):
         fileext_video = config.fileext_video
 
         filter_video = " ".join(["*." + x for x in fileext_video])
@@ -89,6 +89,16 @@ class FormMain(QMainWindow, Ui_MainWindow):
                 items[filename] = set()
         self.qtreewidegt_setitems(qtree, items)
         qtree.resizeColumnToContents(0)
+
+    def removeitems(self, qtree):
+        for item in  qtree.selectedItems():
+            parent = item.parent()
+            if parent is None:
+                parent = qtree.invisibleRootItem()
+            parent.removeChild(item)
+
+    def clearitems(self, qtree):
+        qtree.clear()
 
     def start_resync(self):
         types, trees = zip(*self.ct_trees)
@@ -149,22 +159,21 @@ class FormMain(QMainWindow, Ui_MainWindow):
 
     def ct_append_src_clicked(self):
         qtree = self.sender().parent().findChild(QTreeWidget)
-        self.addfiles_src(qtree)
-
-    def ct_remove_src_clicked(self):
-        pass
-
-    def ct_clean_src_clicked(self):
-        pass
+        self.appenditems_src(qtree)
 
     def ct_append_dst_clicked(self):
         qtree = self.sender().parent().findChild(QTreeWidget)
-        self.addfiles_dst(qtree)
+        self.appenditems_dst(qtree)
 
-    def ct_remove_dst_clicked(self):
-        pass
+    def ct_remove_clicked(self):
+        qtree = self.sender().parent().findChild(QTreeWidget)
+        self.removeitems(qtree)
 
-    def ct_clean_dst_clicked(self):
+    def ct_clear_clicked(self):
+        qtree = self.sender().parent().findChild(QTreeWidget)
+        self.clearitems(qtree)
+
+    def ct_clean_clicked(self):
         pass
 
     def ct_start_clicked(self):

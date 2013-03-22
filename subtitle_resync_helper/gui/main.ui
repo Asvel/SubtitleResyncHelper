@@ -71,6 +71,9 @@
              <property name="styleSheet">
               <string notr="true">font-family: monospace;</string>
              </property>
+             <property name="selectionMode">
+              <enum>QAbstractItemView::ExtendedSelection</enum>
+             </property>
              <attribute name="headerVisible">
               <bool>false</bool>
              </attribute>
@@ -82,7 +85,7 @@
             </widget>
            </item>
            <item>
-            <layout class="QVBoxLayout" name="ct_layout_dst_2" stretch="0,0,0">
+            <layout class="QVBoxLayout" name="ct_layout_dst_2" stretch="0,0,0,0">
              <property name="spacing">
               <number>2</number>
              </property>
@@ -109,6 +112,19 @@
                </property>
                <property name="text">
                 <string>移除</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="ct_clear_src">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="text">
+                <string>清空</string>
                </property>
               </widget>
              </item>
@@ -162,6 +178,9 @@
              <property name="styleSheet">
               <string notr="true">font-family: monospace;</string>
              </property>
+             <property name="selectionMode">
+              <enum>QAbstractItemView::ExtendedSelection</enum>
+             </property>
              <attribute name="headerVisible">
               <bool>false</bool>
              </attribute>
@@ -200,6 +219,19 @@
                </property>
                <property name="text">
                 <string>移除</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="ct_clear_dst">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="text">
+                <string>清空</string>
                </property>
               </widget>
              </item>
@@ -277,8 +309,8 @@
    <slot>ct_start_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>637</x>
-     <y>559</y>
+     <x>32999</x>
+     <y>32596</y>
     </hint>
     <hint type="destinationlabel">
      <x>636</x>
@@ -288,7 +320,7 @@
   </connection>
   <connection>
    <sender>ct_tree_src</sender>
-   <signal>collapsed(QModelIndex)</signal>
+   <signal>itemCollapsed(QTreeWidgetItem*)</signal>
    <receiver>MainWindow</receiver>
    <slot>ct_tree_itemcollapsed()</slot>
    <hints>
@@ -309,8 +341,8 @@
    <slot>ct_append_src_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>768</x>
-     <y>85</y>
+     <x>33130</x>
+     <y>32122</y>
     </hint>
     <hint type="destinationlabel">
      <x>794</x>
@@ -322,11 +354,11 @@
    <sender>ct_remove_src</sender>
    <signal>clicked()</signal>
    <receiver>MainWindow</receiver>
-   <slot>ct_remove_src_clicked()</slot>
+   <slot>ct_remove_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>770</x>
-     <y>162</y>
+     <x>33132</x>
+     <y>32180</y>
     </hint>
     <hint type="destinationlabel">
      <x>794</x>
@@ -338,11 +370,11 @@
    <sender>ct_clean_src</sender>
    <signal>clicked()</signal>
    <receiver>MainWindow</receiver>
-   <slot>ct_clean_src_clicked()</slot>
+   <slot>ct_clean_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>753</x>
-     <y>238</y>
+     <x>33115</x>
+     <y>32275</y>
     </hint>
     <hint type="destinationlabel">
      <x>794</x>
@@ -357,8 +389,8 @@
    <slot>ct_append_dst_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>754</x>
-     <y>337</y>
+     <x>33116</x>
+     <y>32374</y>
     </hint>
     <hint type="destinationlabel">
      <x>793</x>
@@ -370,11 +402,11 @@
    <sender>ct_remove_dst</sender>
    <signal>clicked()</signal>
    <receiver>MainWindow</receiver>
-   <slot>ct_remove_dst_clicked()</slot>
+   <slot>ct_remove_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>749</x>
-     <y>413</y>
+     <x>33111</x>
+     <y>32450</y>
     </hint>
     <hint type="destinationlabel">
      <x>796</x>
@@ -386,11 +418,11 @@
    <sender>ct_clean_dst</sender>
    <signal>clicked()</signal>
    <receiver>MainWindow</receiver>
-   <slot>ct_clean_dst_clicked()</slot>
+   <slot>ct_clean_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>770</x>
-     <y>491</y>
+     <x>33132</x>
+     <y>32528</y>
     </hint>
     <hint type="destinationlabel">
      <x>793</x>
@@ -414,6 +446,70 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>ct_clear_src</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>ct_clear_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>33128</x>
+     <y>32227</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>798</x>
+     <y>187</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>ct_clear_dst</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>ct_clear_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>33125</x>
+     <y>32488</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>793</x>
+     <y>451</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>ct_tree_dst</sender>
+   <signal>itemCollapsed(QTreeWidgetItem*)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>ct_tree_itemcollapsed()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>27</x>
+     <y>360</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>-2</x>
+     <y>359</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>ct_tree_dst</sender>
+   <signal>itemExpanded(QTreeWidgetItem*)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>ct_tree_itemexpanded()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>38</x>
+     <y>398</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>7</x>
+     <y>395</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>ct_add_src_clicked()</slot>
@@ -424,10 +520,9 @@
   <slot>ct_tree_itemcollapsed()</slot>
   <slot>ct_tree_dst_clicked()</slot>
   <slot>ct_append_src_clicked()</slot>
-  <slot>ct_remove_src_clicked()</slot>
-  <slot>ct_clean_src_clicked()</slot>
+  <slot>ct_remove_clicked()</slot>
+  <slot>ct_clean_clicked()</slot>
   <slot>ct_append_dst_clicked()</slot>
-  <slot>ct_remove_dst_clicked()</slot>
-  <slot>ct_clean_dst_clicked()</slot>
+  <slot>ct_clear_clicked()</slot>
  </slots>
 </ui>
