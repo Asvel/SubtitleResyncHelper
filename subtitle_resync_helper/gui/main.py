@@ -56,6 +56,7 @@ class FormMain(QMainWindow, Ui_MainWindow):
             config.filedialog_lastdir, filedialog_filter)
         if len(filelist) > 0:
             config.filedialog_lastdir = os.path.dirname(filelist[0])
+        filelist = [x for x in filelist if os.path.isfile(x)]
 
         filelist_subtitle = []
         for i in reversed(range(len(filelist))):
@@ -82,6 +83,7 @@ class FormMain(QMainWindow, Ui_MainWindow):
             config.filedialog_lastdir, filedialog_filter)
         if len(filelist) > 0:
             config.filedialog_lastdir = os.path.dirname(filelist[0])
+        filelist = [x for x in filelist if os.path.isfile(x)]
 
         items = self.qtreewidegt_getitems(qtree)
         for filename in filelist:
