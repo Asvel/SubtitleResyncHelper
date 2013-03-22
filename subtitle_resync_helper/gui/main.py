@@ -5,7 +5,8 @@ from collections import OrderedDict, namedtuple
 
 import pysubs
 from PyQt4.QtCore import Qt, pyqtSignal
-from PyQt4.QtGui import QMainWindow, QFileDialog, QTreeWidgetItem, QMessageBox
+from PyQt4.QtGui import (QMainWindow, QFileDialog, QMessageBox,
+                         QTreeWidgetItem, QTreeWidget)
 
 from subtitle_resync_helper import config, timemap, shifter
 from subtitle_resync_helper.gui.timemaper import FormTimeMapper
@@ -25,14 +26,14 @@ class FormMain(QMainWindow, Ui_MainWindow):
 
     def qtreewidegt_getitems(self, qtreewidget):
         items = OrderedDict()
-        for i in range(qtreewidget.topLevelItemCount() - 1):
+        for i in range(qtreewidget.topLevelItemCount()):
             qitem = qtreewidget.topLevelItem(i)
             items[qitem.text(0)] = {qitem.child(i).text(0)
                                    for i in range(qitem.childCount())}
         return items
 
     def qtreewidegt_setitems(self, qtreewidget, items):
-        for i in reversed(range(qtreewidget.topLevelItemCount() - 1)):
+        for i in reversed(range(qtreewidget.topLevelItemCount())):
             qtreewidget.takeTopLevelItem(i)
         for parent in items:
             children = sorted(items[parent])
@@ -40,7 +41,7 @@ class FormMain(QMainWindow, Ui_MainWindow):
             for child in children:
                 qitem.addChild(QTreeWidgetItem([child]))
             qtreewidget.insertTopLevelItem(
-                qtreewidget.topLevelItemCount() - 1, qitem)
+                qtreewidget.topLevelItemCount(), qitem)
 
     def addfiles_src(self, qtree):
         fileext_video = config.fileext_video
@@ -140,22 +141,31 @@ class FormMain(QMainWindow, Ui_MainWindow):
                         shifter.shift(subs, timedelta)
                         subs.save(sub_dst)
 
-
-    def ct_start_clicked(self):
-        self.start_resync()
-
-    def ct_tree_src_clicked(self, item, column):
-        qtree = self.sender()
-        if qtree.indexOfTopLevelItem(item) + 1 == qtree.topLevelItemCount():
-            self.addfiles_src(qtree)
-
-    def ct_tree_dst_clicked(self, item, column):
-        qtree = self.sender()
-        if qtree.indexOfTopLevelItem(item) + 1 == qtree.topLevelItemCount():
-            self.addfiles_dst(qtree)
-
     def ct_tree_itemexpanded(self, item):
         self.sender().resizeColumnToContents(0)
 
     def ct_tree_itemcollapsed(self, item):
         self.sender().resizeColumnToContents(0)
+
+    def ct_append_src_clicked(self):
+        qtree = self.sender().parent().findChild(QTreeWidget)
+        self.addfiles_src(qtree)
+
+    def ct_remove_src_clicked(self):
+        pass
+
+    def ct_clean_src_clicked(self):
+        pass
+
+    def ct_append_dst_clicked(self):
+        qtree = self.sender().parent().findChild(QTreeWidget)
+        self.addfiles_dst(qtree)
+
+    def ct_remove_dst_clicked(self):
+        pass
+
+    def ct_clean_dst_clicked(self):
+        pass
+
+    def ct_start_clicked(self):
+        self.start_resync()

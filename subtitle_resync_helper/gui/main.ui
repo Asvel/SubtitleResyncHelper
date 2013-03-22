@@ -14,7 +14,7 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QVBoxLayout" name="verticalLayout" stretch="1,0">
+   <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0">
     <item>
      <widget class="QScrollArea" name="scrollArea">
       <property name="styleSheet">
@@ -35,51 +35,190 @@
          <height>510</height>
         </rect>
        </property>
-       <layout class="QVBoxLayout" name="verticalLayout_3">
+       <layout class="QVBoxLayout" name="ct_layout_0">
         <property name="margin">
          <number>0</number>
         </property>
         <item>
-         <widget class="QTreeWidget" name="ct_tree_src">
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>200</height>
-           </size>
+         <widget class="QGroupBox" name="ct_groupbox_src">
+          <property name="title">
+           <string>原始文件</string>
           </property>
-          <property name="styleSheet">
-           <string notr="true">font-family: monospace;</string>
-          </property>
-          <column>
-           <property name="text">
-            <string>原始文件</string>
+          <layout class="QHBoxLayout" name="ct_layout_dst_1">
+           <property name="spacing">
+            <number>2</number>
            </property>
-          </column>
-          <item>
-           <property name="text">
-            <string>添加...</string>
+           <property name="leftMargin">
+            <number>6</number>
            </property>
-          </item>
+           <property name="topMargin">
+            <number>2</number>
+           </property>
+           <property name="rightMargin">
+            <number>6</number>
+           </property>
+           <property name="bottomMargin">
+            <number>6</number>
+           </property>
+           <item>
+            <widget class="QTreeWidget" name="ct_tree_src">
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>200</height>
+              </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">font-family: monospace;</string>
+             </property>
+             <attribute name="headerVisible">
+              <bool>false</bool>
+             </attribute>
+             <column>
+              <property name="text">
+               <string/>
+              </property>
+             </column>
+            </widget>
+           </item>
+           <item>
+            <layout class="QVBoxLayout" name="ct_layout_dst_2" stretch="0,0,0">
+             <property name="spacing">
+              <number>2</number>
+             </property>
+             <item>
+              <widget class="QPushButton" name="ct_append_src">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="text">
+                <string>添加</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="ct_remove_src">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="text">
+                <string>移除</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="ct_clean_src">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="text">
+                <string>清理</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+          </layout>
          </widget>
         </item>
         <item>
-         <widget class="QTreeWidget" name="ct_tree_dst">
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>200</height>
-           </size>
+         <widget class="QGroupBox" name="ct_groupbox_dst">
+          <property name="title">
+           <string>目标文件</string>
           </property>
-          <column>
-           <property name="text">
-            <string>目标文件</string>
+          <layout class="QHBoxLayout" name="ct_layout_src_1">
+           <property name="spacing">
+            <number>2</number>
            </property>
-          </column>
-          <item>
-           <property name="text">
-            <string>添加...</string>
+           <property name="leftMargin">
+            <number>6</number>
            </property>
-          </item>
+           <property name="topMargin">
+            <number>2</number>
+           </property>
+           <property name="rightMargin">
+            <number>6</number>
+           </property>
+           <property name="bottomMargin">
+            <number>6</number>
+           </property>
+           <item>
+            <widget class="QTreeWidget" name="ct_tree_dst">
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>200</height>
+              </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">font-family: monospace;</string>
+             </property>
+             <attribute name="headerVisible">
+              <bool>false</bool>
+             </attribute>
+             <column>
+              <property name="text">
+               <string/>
+              </property>
+             </column>
+            </widget>
+           </item>
+           <item>
+            <layout class="QVBoxLayout" name="ct_layout_src_2">
+             <property name="spacing">
+              <number>2</number>
+             </property>
+             <item>
+              <widget class="QPushButton" name="ct_append_dst">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="text">
+                <string>添加</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="ct_remove_dst">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="text">
+                <string>移除</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="ct_clean_dst">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="text">
+                <string>清理</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+          </layout>
          </widget>
         </item>
        </layout>
@@ -119,6 +258,14 @@
  </widget>
  <tabstops>
   <tabstop>scrollArea</tabstop>
+  <tabstop>ct_tree_src</tabstop>
+  <tabstop>ct_append_src</tabstop>
+  <tabstop>ct_remove_src</tabstop>
+  <tabstop>ct_clean_src</tabstop>
+  <tabstop>ct_tree_dst</tabstop>
+  <tabstop>ct_append_dst</tabstop>
+  <tabstop>ct_remove_dst</tabstop>
+  <tabstop>ct_clean_dst</tabstop>
   <tabstop>ct_start</tabstop>
  </tabstops>
  <resources/>
@@ -141,17 +288,113 @@
   </connection>
   <connection>
    <sender>ct_tree_src</sender>
-   <signal>itemClicked(QTreeWidgetItem*,int)</signal>
+   <signal>collapsed(QModelIndex)</signal>
    <receiver>MainWindow</receiver>
-   <slot>ct_tree_src_clicked()</slot>
+   <slot>ct_tree_itemcollapsed()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>20</x>
-     <y>176</y>
+     <x>32</x>
+     <y>157</y>
     </hint>
     <hint type="destinationlabel">
-     <x>5</x>
-     <y>176</y>
+     <x>-1</x>
+     <y>106</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>ct_append_src</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>ct_append_src_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>768</x>
+     <y>85</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>794</x>
+     <y>82</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>ct_remove_src</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>ct_remove_src_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>770</x>
+     <y>162</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>794</x>
+     <y>159</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>ct_clean_src</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>ct_clean_src_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>753</x>
+     <y>238</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>794</x>
+     <y>234</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>ct_append_dst</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>ct_append_dst_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>754</x>
+     <y>337</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>793</x>
+     <y>336</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>ct_remove_dst</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>ct_remove_dst_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>749</x>
+     <y>413</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>796</x>
+     <y>412</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>ct_clean_dst</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>ct_clean_dst_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>770</x>
+     <y>491</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>793</x>
+     <y>491</y>
     </hint>
    </hints>
   </connection>
@@ -162,44 +405,12 @@
    <slot>ct_tree_itemexpanded()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>12</x>
-     <y>124</y>
+     <x>30</x>
+     <y>177</y>
     </hint>
     <hint type="destinationlabel">
      <x>3</x>
      <y>124</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>ct_tree_src</sender>
-   <signal>collapsed(QModelIndex)</signal>
-   <receiver>MainWindow</receiver>
-   <slot>ct_tree_itemcollapsed()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>14</x>
-     <y>106</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>-1</x>
-     <y>106</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>ct_tree_dst</sender>
-   <signal>itemClicked(QTreeWidgetItem*,int)</signal>
-   <receiver>MainWindow</receiver>
-   <slot>ct_tree_dst_clicked()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>26</x>
-     <y>443</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>2</x>
-     <y>442</y>
     </hint>
    </hints>
   </connection>
@@ -212,5 +423,11 @@
   <slot>ct_tree_itemexpanded()</slot>
   <slot>ct_tree_itemcollapsed()</slot>
   <slot>ct_tree_dst_clicked()</slot>
+  <slot>ct_append_src_clicked()</slot>
+  <slot>ct_remove_src_clicked()</slot>
+  <slot>ct_clean_src_clicked()</slot>
+  <slot>ct_append_dst_clicked()</slot>
+  <slot>ct_remove_dst_clicked()</slot>
+  <slot>ct_clean_dst_clicked()</slot>
  </slots>
 </ui>
