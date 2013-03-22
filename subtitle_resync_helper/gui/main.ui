@@ -309,8 +309,8 @@
    <slot>ct_start_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>32999</x>
-     <y>32596</y>
+     <x>637</x>
+     <y>559</y>
     </hint>
     <hint type="destinationlabel">
      <x>636</x>
@@ -341,8 +341,8 @@
    <slot>ct_append_src_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>33130</x>
-     <y>32122</y>
+     <x>768</x>
+     <y>85</y>
     </hint>
     <hint type="destinationlabel">
      <x>794</x>
@@ -357,8 +357,8 @@
    <slot>ct_remove_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>33132</x>
-     <y>32180</y>
+     <x>770</x>
+     <y>143</y>
     </hint>
     <hint type="destinationlabel">
      <x>794</x>
@@ -370,11 +370,11 @@
    <sender>ct_clean_src</sender>
    <signal>clicked()</signal>
    <receiver>MainWindow</receiver>
-   <slot>ct_clean_clicked()</slot>
+   <slot>ct_clean_src_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>33115</x>
-     <y>32275</y>
+     <x>753</x>
+     <y>238</y>
     </hint>
     <hint type="destinationlabel">
      <x>794</x>
@@ -389,8 +389,8 @@
    <slot>ct_append_dst_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>33116</x>
-     <y>32374</y>
+     <x>754</x>
+     <y>337</y>
     </hint>
     <hint type="destinationlabel">
      <x>793</x>
@@ -405,8 +405,8 @@
    <slot>ct_remove_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>33111</x>
-     <y>32450</y>
+     <x>749</x>
+     <y>413</y>
     </hint>
     <hint type="destinationlabel">
      <x>796</x>
@@ -418,11 +418,11 @@
    <sender>ct_clean_dst</sender>
    <signal>clicked()</signal>
    <receiver>MainWindow</receiver>
-   <slot>ct_clean_clicked()</slot>
+   <slot>ct_clean_dst_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>33132</x>
-     <y>32528</y>
+     <x>770</x>
+     <y>491</y>
     </hint>
     <hint type="destinationlabel">
      <x>793</x>
@@ -453,8 +453,8 @@
    <slot>ct_clear_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>33128</x>
-     <y>32227</y>
+     <x>766</x>
+     <y>190</y>
     </hint>
     <hint type="destinationlabel">
      <x>798</x>
@@ -469,8 +469,8 @@
    <slot>ct_clear_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>33125</x>
-     <y>32488</y>
+     <x>763</x>
+     <y>451</y>
     </hint>
     <hint type="destinationlabel">
      <x>793</x>
@@ -521,8 +521,9 @@
   <slot>ct_tree_dst_clicked()</slot>
   <slot>ct_append_src_clicked()</slot>
   <slot>ct_remove_clicked()</slot>
-  <slot>ct_clean_clicked()</slot>
   <slot>ct_append_dst_clicked()</slot>
   <slot>ct_clear_clicked()</slot>
+  <slot>ct_clean_src_clicked()</slot>
+  <slot>ct_clean_dst_clicked()</slot>
  </slots>
 </ui>

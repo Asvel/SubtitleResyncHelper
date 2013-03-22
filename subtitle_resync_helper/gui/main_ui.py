@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'main.ui'
 #
-# Created: Fri Mar 22 19:36:34 2013
+# Created: Fri Mar 22 19:55:42 2013
 #      by: PyQt4 UI code generator 4.9.6
 #
 # WARNING! All changes made in this file will be lost!
@@ -169,10 +169,10 @@ class Ui_MainWindow(object):
         QtCore.QObject.connect(self.ct_tree_src, QtCore.SIGNAL(_fromUtf8("itemCollapsed(QTreeWidgetItem*)")), MainWindow.ct_tree_itemcollapsed)
         QtCore.QObject.connect(self.ct_append_src, QtCore.SIGNAL(_fromUtf8("clicked()")), MainWindow.ct_append_src_clicked)
         QtCore.QObject.connect(self.ct_remove_src, QtCore.SIGNAL(_fromUtf8("clicked()")), MainWindow.ct_remove_clicked)
-        QtCore.QObject.connect(self.ct_clean_src, QtCore.SIGNAL(_fromUtf8("clicked()")), MainWindow.ct_clean_clicked)
+        QtCore.QObject.connect(self.ct_clean_src, QtCore.SIGNAL(_fromUtf8("clicked()")), MainWindow.ct_clean_src_clicked)
         QtCore.QObject.connect(self.ct_append_dst, QtCore.SIGNAL(_fromUtf8("clicked()")), MainWindow.ct_append_dst_clicked)
         QtCore.QObject.connect(self.ct_remove_dst, QtCore.SIGNAL(_fromUtf8("clicked()")), MainWindow.ct_remove_clicked)
-        QtCore.QObject.connect(self.ct_clean_dst, QtCore.SIGNAL(_fromUtf8("clicked()")), MainWindow.ct_clean_clicked)
+        QtCore.QObject.connect(self.ct_clean_dst, QtCore.SIGNAL(_fromUtf8("clicked()")), MainWindow.ct_clean_dst_clicked)
         QtCore.QObject.connect(self.ct_tree_src, QtCore.SIGNAL(_fromUtf8("itemExpanded(QTreeWidgetItem*)")), MainWindow.ct_tree_itemexpanded)
         QtCore.QObject.connect(self.ct_clear_src, QtCore.SIGNAL(_fromUtf8("clicked()")), MainWindow.ct_clear_clicked)
         QtCore.QObject.connect(self.ct_clear_dst, QtCore.SIGNAL(_fromUtf8("clicked()")), MainWindow.ct_clear_clicked)

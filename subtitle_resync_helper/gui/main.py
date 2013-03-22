@@ -100,6 +100,22 @@ class FormMain(QMainWindow, Ui_MainWindow):
     def clearitems(self, qtree):
         qtree.clear()
 
+    def cleanitems_src(self, qtree):
+        for i in reversed(range(qtree.topLevelItemCount())):
+            qitem = qtree.topLevelItem(i)
+            if qitem.childCount() == 0:
+                qtree.takeTopLevelItem(i)
+
+    def cleanitems_dst(self, qtree):
+        video_counts = [x[1].topLevelItemCount() for x in self.ct_trees
+                        if x[0] == 'src']
+        video_count = min(video_counts)
+        if video_count == max(video_counts):
+            for i in reversed(range(video_count, qtree.topLevelItemCount())):
+                qtree.takeTopLevelItem(i)
+        else:
+            QMessageBox.error(self, "错误", "目标文件列表中视频数不同")
+
     def start_resync(self):
         types, trees = zip(*self.ct_trees)
         trees = [self.qtreewidegt_getitems(x) for x in trees]
@@ -173,8 +189,13 @@ class FormMain(QMainWindow, Ui_MainWindow):
         qtree = self.sender().parent().findChild(QTreeWidget)
         self.clearitems(qtree)
 
-    def ct_clean_clicked(self):
-        pass
+    def ct_clean_src_clicked(self):
+        qtree = self.sender().parent().findChild(QTreeWidget)
+        self.cleanitems_src(qtree)
+
+    def ct_clean_dst_clicked(self):
+        qtree = self.sender().parent().findChild(QTreeWidget)
+        self.cleanitems_dst(qtree)
 
     def ct_start_clicked(self):
         self.start_resync()
