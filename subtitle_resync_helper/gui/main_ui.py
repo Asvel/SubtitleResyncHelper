@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'main.ui'
 #
-# Created: Fri Mar 22 19:55:42 2013
+# Created: Sat Apr 13 16:11:15 2013
 #      by: PyQt4 UI code generator 4.9.6
 #
 # WARNING! All changes made in this file will be lost!
@@ -192,11 +192,15 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow", None))
         self.ct_groupbox_src.setTitle(_translate("MainWindow", "原始文件", None))
+        self.ct_tree_src.headerItem().setText(0, _translate("MainWindow", "name", None))
+        self.ct_tree_src.headerItem().setText(1, _translate("MainWindow", "dir", None))
         self.ct_append_src.setText(_translate("MainWindow", "添加", None))
         self.ct_remove_src.setText(_translate("MainWindow", "移除", None))
         self.ct_clear_src.setText(_translate("MainWindow", "清空", None))
         self.ct_clean_src.setText(_translate("MainWindow", "清理", None))
         self.ct_groupbox_dst.setTitle(_translate("MainWindow", "目标文件", None))
+        self.ct_tree_dst.headerItem().setText(0, _translate("MainWindow", "name", None))
+        self.ct_tree_dst.headerItem().setText(1, _translate("MainWindow", "dir", None))
         self.ct_append_dst.setText(_translate("MainWindow", "添加", None))
         self.ct_remove_dst.setText(_translate("MainWindow", "移除", None))
         self.ct_clear_dst.setText(_translate("MainWindow", "清空", None))

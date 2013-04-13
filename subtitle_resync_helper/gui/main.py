@@ -17,6 +17,15 @@ class FormMain(QMainWindow, Ui_MainWindow):
 
     def __init__(self):
         super(FormMain, self).__init__()
+
+        def get_filename(self):
+            return os.path.join(self.text(1), self.text(0))
+        def set_filename(self, filename):
+            head, tail = os.path.split(filename)
+            self.setText(0, tail)
+            self.setText(1, head)
+        QTreeWidgetItem.filename = property(get_filename, set_filename)
+
         self.setupUi(self)
 
         self.ct_trees = [
@@ -24,40 +33,49 @@ class FormMain(QMainWindow, Ui_MainWindow):
             ('dst', self.ct_tree_dst),
         ]
 
+        for qtree in self.ct_trees:
+            qtree[1].hideColumn(1)
+
+    def __new_qtreewidgetitem(self, filename):
+        qitem = QTreeWidgetItem()
+        qitem.filename = filename
+        return qitem
+
     def qtreewidegt_getitems(self, qtreewidget):
         items = OrderedDict()
         for i in range(qtreewidget.topLevelItemCount()):
             qitem = qtreewidget.topLevelItem(i)
-            items[qitem.text(0)] = {qitem.child(i).text(0)
-                                   for i in range(qitem.childCount())}
+            items[qitem.filename] = {qitem.child(i).filename
+                for i in range(qitem.childCount())}
         return items
 
     def qtreewidegt_setitems(self, qtreewidget, items):
-        for i in reversed(range(qtreewidget.topLevelItemCount())):
-            qtreewidget.takeTopLevelItem(i)
+        qtreewidget.clear()
         for parent in items:
             children = sorted(items[parent])
-            qitem = QTreeWidgetItem([parent])
+            qitem = self.__new_qtreewidgetitem(parent)
             for child in children:
-                qitem.addChild(QTreeWidgetItem([child]))
-            qtreewidget.insertTopLevelItem(
-                qtreewidget.topLevelItemCount(), qitem)
+                qitem.addChild(self.__new_qtreewidgetitem(child))
+            qtreewidget.addTopLevelItem(qitem)
 
     def appenditems_src(self, qtree):
+        # 扩展名筛选
         fileext_video = config.fileext_video
         fileext_subtitle = config.fileext_subtitle
-
         filter_video = " ".join(["*." + x for x in fileext_video])
         filter_subtitle = " ".join(["*." + x for x in fileext_subtitle])
         filter_video_sub = " ".join([filter_video, filter_subtitle])
         filedialog_filter = "视频与字幕 ({});;视频 ({});;字幕 ({})".format(
             filter_video_sub, filter_video, filter_subtitle)
+
+        # 获取文件列表
         filelist = QFileDialog.getOpenFileNames(self, "选择原始文件",
             config.filedialog_lastdir, filedialog_filter)
         if len(filelist) > 0:
             config.filedialog_lastdir = os.path.dirname(filelist[0])
         filelist = [x for x in filelist if os.path.isfile(x)]
 
+        # 显示文件列表
         filelist_subtitle = []
         for i in reversed(range(len(filelist))):
             if os.path.splitext(filelist[i])[1][1:] in fileext_subtitle:
@@ -75,16 +93,19 @@ class FormMain(QMainWindow, Ui_MainWindow):
         qtree.resizeColumnToContents(0)
 
     def appenditems_dst(self, qtree):
+        # 扩展名筛选
         fileext_video = config.fileext_video
-
         filter_video = " ".join(["*." + x for x in fileext_video])
         filedialog_filter = "视频 ({})".format(filter_video)
+
+        # 获取文件列表
         filelist = QFileDialog.getOpenFileNames(self, "选择目标文件",
             config.filedialog_lastdir, filedialog_filter)
         if len(filelist) > 0:
             config.filedialog_lastdir = os.path.dirname(filelist[0])
         filelist = [x for x in filelist if os.path.isfile(x)]
 
+        # 显示文件列表
         items = self.qtreewidegt_getitems(qtree)
         for filename in filelist:
             if filename not in items:
@@ -93,7 +114,7 @@ class FormMain(QMainWindow, Ui_MainWindow):
         qtree.resizeColumnToContents(0)
 
     def removeitems(self, qtree):
-        for item in  qtree.selectedItems():
+        for item in qtree.selectedItems():
             parent = item.parent()
             if parent is None:
                 parent = qtree.invisibleRootItem()
