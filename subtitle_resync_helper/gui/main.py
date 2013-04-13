@@ -18,13 +18,17 @@ class FormMain(QMainWindow, Ui_MainWindow):
     def __init__(self):
         super(FormMain, self).__init__()
 
-        def get_filename(self):
+        def _get_filename(self):
             return os.path.join(self.text(1), self.text(0))
-        def set_filename(self, filename):
+        def _set_filename(self, filename):
             head, tail = os.path.split(filename)
             self.setText(0, tail)
             self.setText(1, head)
-        QTreeWidgetItem.filename = property(get_filename, set_filename)
+        QTreeWidgetItem.filename = property(_get_filename, _set_filename)
+        def _children(self):
+            for i in range(self.childCount()):
+                yield self.child(i)
+        QTreeWidgetItem.children = _children
 
         self.setupUi(self)
 
@@ -45,8 +49,7 @@ class FormMain(QMainWindow, Ui_MainWindow):
         items = OrderedDict()
         for i in range(qtreewidget.topLevelItemCount()):
             qitem = qtreewidget.topLevelItem(i)
-            items[qitem.filename] = {qitem.child(i).filename
-                for i in range(qitem.childCount())}
+            items[qitem.filename] = {x.filename for x in qitem.children()}
         return items
 
     def qtreewidegt_setitems(self, qtreewidget, items):
@@ -140,55 +143,62 @@ class FormMain(QMainWindow, Ui_MainWindow):
             QMessageBox.error(self, "错误", "目标文件列表中视频数不同")
 
     def start_resync(self):
+        # 文件列表
         types, trees = zip(*self.ct_trees)
-        trees = [self.qtreewidegt_getitems(x) for x in trees]
-        video_counts = [len(x) for x in trees]
-        video_count = min(video_counts)
-        if video_count != max(video_counts):
-            QMessageBox.warning(self, "警告", "列表中视频数不同")
+        if min([x.topLevelItemCount() for x in trees]) < 1:
+            QMessageBox.error(self, "错误", "文件列表中没有文件")
+        videos = [x.topLevelItem(0).filename for x in trees]
 
-        for videos in zip(*trees):
+        # 获取时间映射表
+        try:
+            self.hide()
             timemapper = FormTimeMapper(types, videos)
             timemapper.exec()
             print(timemapper.timemap)
+        finally:
+            self.show()
 
-            videos_src = []
-            videos_dst = []
-            timelists_src = []
-            timelists_dst = []
-            subtitless_src = []
-            for type, tree, video, timelist in \
-                zip(types, trees, videos, timemapper.timemap):
-                if type == 'src':
-                    videos_src.append(video)
-                    timelists_src.append(timelist)
-                    subtitless_src.append(tree[video])
-                else: # type == 'dst'
-                    videos_dst.append(video)
-                    timelists_dst.append(timelist)
+        # 准备文件名
+        videos_src = []
+        videos_dst = []
+        timelists_src = []
+        timelists_dst = []
+        subtitless_src = []
+        for type, tree, video, timelist in \
+            zip(types, trees, videos, timemapper.timemap):
+            if type == 'src':
+                videos_src.append(video)
+                timelists_src.append(timelist)
+                subtitless_src.append([x.filename for x in
+                                       tree.topLevelItem(0).children()])
+            else:
+                videos_dst.append(video)
+                timelists_dst.append(timelist)
+            tree.takeTopLevelItem(0)
 
-            for video_dst, timelist_dst in zip(videos_dst, timelists_dst):
-                for video_src, timelist_src, subtitles_src in \
-                    zip(videos_src, timelists_src, subtitless_src):
-                    timedelta = timemap.normalize(
-                        zip(timelist_src, timelist_dst))
-                    for sub_src in subtitles_src:
-                        video_src_mainname = os.path.splitext(
-                            os.path.split(video_src)[1])[0]
-                        sub_src_name = os.path.split(sub_src)[1]
-                        video_dst_mainname = os.path.splitext(
-                            os.path.split(video_dst)[1])[0]
-                        if sub_src_name.startswith(video_src_mainname):
-                            sub_dst_name = video_dst_mainname + \
-                                sub_src_name[len(video_src_mainname):]
-                        else:
-                            sub_dst_name = sub_src_name
-                        sub_dst = os.path.join(os.path.dirname(video_dst),
-                            sub_dst_name)
+        for video_dst, timelist_dst in zip(videos_dst, timelists_dst):
+            for video_src, timelist_src, subtitles_src in \
+                zip(videos_src, timelists_src, subtitless_src):
+                timedelta = timemap.normalize(zip(timelist_src, timelist_dst))
+                for sub_src in subtitles_src:
+                    # 生成字幕文件名
+                    video_src_mainname = os.path.splitext(
+                        os.path.split(video_src)[1])[0]
+                    sub_src_name = os.path.split(sub_src)[1]
+                    video_dst_mainname = os.path.splitext(
+                        os.path.split(video_dst)[1])[0]
+                    if sub_src_name.startswith(video_src_mainname):
+                        sub_dst_name = video_dst_mainname + \
+                                       sub_src_name[len(video_src_mainname):]
+                    else:
+                        sub_dst_name = sub_src_name
+                    sub_dst = os.path.join(os.path.dirname(video_dst),
+                                           sub_dst_name)
 
-                        subs = pysubs.load(sub_src)
-                        shifter.shift(subs, timedelta)
-                        subs.save(sub_dst)
+                    # 调整字幕
+                    subs = pysubs.load(sub_src)
+                    shifter.shift(subs, timedelta)
+                    subs.save(sub_dst)
 
     def ct_tree_itemexpanded(self, item):
         self.sender().resizeColumnToContents(0)
