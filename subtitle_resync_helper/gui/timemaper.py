@@ -2,7 +2,7 @@
 
 from PyQt4.QtCore import Qt, pyqtSignal
 from PyQt4.QtGui import (QDialog, QKeySequence, QApplication,
-                         QTableWidgetItem, QHeaderView)
+                         QTableWidgetItem, QHeaderView, QMessageBox)
 from pygs import QxtGlobalShortcut
 
 from subtitle_resync_helper import config, player, time
@@ -46,7 +46,24 @@ class FormTimeMapper(QDialog, Ui_FormTimeMapper):
         self.players = [Player(x) for x in self.filepaths]
 
     def closeEvent(self, event):
-        event.accept()
+
+        # 结尾校验
+        endcheck = True
+        try:
+            count = self.ct_table.rowCount()
+            delta = [time.parse(self.ct_table.item(count-1, i).text()) -
+                     time.parse(self.ct_table.item(count-2, i).text())
+                     for i in range(self.ct_table.columnCount())]
+            if not time.is_approx_equal(max(delta), min(delta)):
+                endcheck = False
+        except Exception:  # count < 2 or item(count-1) is part
+            endcheck = False
+        if not endcheck and QMessageBox.warning(self, "警告",
+            "结尾校验没用通过，可能遗漏了时间映射，是否继续？",
+            QMessageBox.Yes | QMessageBox.No,
+            QMessageBox.No) != QMessageBox.Yes:
+                event.ignore()
+                return
 
         del self.shortcut_addpart
         del self.shortcut_addmap
@@ -57,8 +74,13 @@ class FormTimeMapper(QDialog, Ui_FormTimeMapper):
 
         self.timemap = []
         for j in range(self.ct_table.columnCount()):
-            self.timemap.append([time.parse(self.ct_table.item(i, j).text())
-                          for i in range(self.ct_table.rowCount())])
+            col = [self.ct_table.item(i, j).text()
+                   for i in range(self.ct_table.rowCount())]
+            col = [time.parse(x) if x != "" else None for x in col]
+            self.timemap.append(col)
+        if endcheck:
+            for tm in self.timemap:
+                del tm[len(tm) - 1]
         self.finished.emit(self.timemap)
 
     def grabtimes(self, src_only=False):

@@ -157,6 +157,7 @@ class FormMain(QMainWindow, Ui_MainWindow):
             print(timemapper.timemap)
         finally:
             self.show()
+            self.setFocus()
 
         # 准备文件名
         videos_src = []
