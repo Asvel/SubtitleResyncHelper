@@ -11,10 +11,6 @@ from subtitle_resync_helper.player.player_win import PlayerWin as Player
 
 class PlayerMPCHC(Player):
 
-    def __init__(self, filepath):
-        super(PlayerMPCHC, self).__init__(filepath)
-        pass
-
     def _generate_args(self, filepath):
         return [config.playerpath, "/open", "/new", filepath]
 
@@ -45,10 +41,3 @@ class PlayerMPCHC(Player):
             for hwnd in win.FindWindows(class_="#32770", parent=self._mainhwnd):
                 win.SendMessage(hwnd, win.WM_CLOSE, 0, 0)
         return time
-
-    def close(self):
-        win.CloseHandle(self._handle)
-        for hwnd in win.FindWindows(parent=self._mainhwnd):
-            win.SendMessage(hwnd, win.WM_CLOSE, 0, 0)
-        win.PostMessage(self._mainhwnd, win.WM_CLOSE, 0, 0)
-        self._closed = True

@@ -7,23 +7,36 @@ from subtitle_resync_helper import config, time
 
 class Player(object):
 
-    def __init__(self, filepath):
-        self._closed = False
-        self._player = subprocess.Popen(self._generate_args(filepath))
+    def __init__(self, filepath, autoopen=True):
+        self._filepath = filepath
+        self._opened = False
+        if autoopen:
+            self.open()
 
     def __del__(self):
-        if not self._closed:
-            self.close()
+        self.close()
 
     def _generate_args(self, filepath):
         return [config.playerpath, filepath]
 
+    def _open(self):
+        self._player = subprocess.Popen(self._generate_args(self._filepath))
+
+    def _close(self):
+        self._player.terminate()
+
     def _parse_time(self, s):
         return time.parse(s)
+
+    def open(self):
+        if not self._opened:
+            self._open()
+            self._opened = False
 
     def grabtime(self):
         raise NotImplementedError()
 
     def close(self):
-        self._player.terminate()
-        self._closed = True
+        if self._opened:
+            self._close()
+            self._opened = False

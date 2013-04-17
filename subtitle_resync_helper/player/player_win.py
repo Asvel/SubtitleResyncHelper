@@ -6,15 +6,23 @@ from subtitle_resync_helper.player.player import Player
 
 class PlayerWin(Player):
 
-    def __init__(self, filepath):
-        super(PlayerWin, self).__init__(filepath)
-        self._handle = win.GetProcessHandleByProcessId(self._player.pid)
-        win.WaitForInputIdle(self._handle, win.INFINITE)
+    def _open(self):
+        super(PlayerWin, self)._open()
+
+        handle = win.GetProcessHandleByProcessId(self._player.pid)
+        win.WaitForInputIdle(handle, win.INFINITE)
+        win.CloseHandle(handle)
+
         self._mainhwnd = self._get_main_window_handle()
         win.MaximumWindow(self._mainhwnd)
 
     def _get_main_window_handle(self):
         raise NotImplementedError()
+
+    def _close(self):
+        for hwnd in win.FindWindows(parent=self._mainhwnd):
+            win.SendMessage(hwnd, win.WM_CLOSE, 0, 0)
+        win.PostMessage(self._mainhwnd, win.WM_CLOSE, 0, 0)
 
     def grabtime(self):
         hwnd = win.GetGUIThreadInfo(0).hwndFocus
@@ -24,8 +32,3 @@ class PlayerWin(Player):
         except:
             time = None
         return time
-
-    def close(self):
-        win.CloseHandle(self._handle)
-        self._player.terminate()
-        self._closed = True
