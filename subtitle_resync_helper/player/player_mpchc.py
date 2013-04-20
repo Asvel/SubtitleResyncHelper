@@ -107,3 +107,7 @@ class PlayerMPCHC(Player):
         self._pump_message_until(lambda : self._time is not None)
         time = Time(s=self._time) if self._time is not None else None
         return time
+
+    def settime(self, time):
+        self._send_message(CMD.SETPOSITION, str(time.ms_time/1000))
+

@@ -51,6 +51,10 @@ class FormTimeMapper(QDialog, Ui_FormTimeMapper):
         self.shortcut_next = QxtGlobalShortcut(QKeySequence(
             config.shortcut['timemaper_next']))
         self.shortcut_next.activated.connect(self.shortcut_next_activated)
+        self.shortcut_next_with_time = QxtGlobalShortcut(QKeySequence(
+            config.shortcut['timemaper_next_with_time']))
+        self.shortcut_next_with_time.activated.connect(
+            self.shortcut_next_with_time_activated)
 
         self.players = [Player(x) for x in self.filepaths]
         self.players[0].focus()
@@ -119,13 +123,13 @@ class FormTimeMapper(QDialog, Ui_FormTimeMapper):
         else:
             self.showinfo("获取时间失败", type_='error')
 
-    def focus_next_player(self):
-        next_index = 0
-        for i in range(len(self.players)):
-            if self.players[i].has_focus:
-                next_index = (i+1) % len(self.players)
-                break
-        self.players[next_index].focus()
+    def focus_next_player(self, with_time_sync=False):
+        current_index = next((i for i in range(len(self.players))
+            if self.players[i].has_focus), len(self.players)-1)
+        next_player = self.players[(current_index+1) % len(self.players)]
+        next_player.focus()
+        if with_time_sync:
+            next_player.settime(self.players[current_index].grabtime())
 
     def shortcut_addpart_activated(self):
         self.grabtimes(src_only=True)
@@ -141,6 +145,9 @@ class FormTimeMapper(QDialog, Ui_FormTimeMapper):
 
     def shortcut_next_activated(self):
         self.focus_next_player()
+
+    def shortcut_next_with_time_activated(self):
+        self.focus_next_player(True)
 
     def showinfo(self, s, type_='normal'):
         self.ct_info.setText(s)

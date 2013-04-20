@@ -21,6 +21,7 @@ shortcut = {
     'timemaper_dellast': 'F9',
     'timemaper_finish': 'F11',
     'timemaper_next': 'Tab',
+    'timemaper_next_with_time': 'Ctrl+Tab',
 }
 
 _config_path = _os.path.join(_os.path.dirname(_sys.argv[0]), "config.json")
