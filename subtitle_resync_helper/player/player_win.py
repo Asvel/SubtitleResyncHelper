@@ -13,16 +13,16 @@ class PlayerWin(Player):
         win.WaitForInputIdle(handle, win.INFINITE)
         win.CloseHandle(handle)
 
-        self._mainhwnd = self._get_main_window_handle()
-        win.MaximumWindow(self._mainhwnd)
+        self._hwnd = self._get_main_window_handle()
+        win.MaximumWindow(self._hwnd)
 
     def _get_main_window_handle(self):
         raise NotImplementedError()
 
     def _close(self):
-        for hwnd in win.FindWindows(parent=self._mainhwnd):
+        for hwnd in win.FindWindows(parent=self._hwnd):
             win.SendMessage(hwnd, win.WM_CLOSE, 0, 0)
-        win.PostMessage(self._mainhwnd, win.WM_CLOSE, 0, 0)
+        win.PostMessage(self._hwnd, win.WM_CLOSE, 0, 0)
 
     def grabtime(self):
         hwnd = win.GetGUIThreadInfo(0).hwndFocus
@@ -32,3 +32,10 @@ class PlayerWin(Player):
         except Exception:
             time = None
         return time
+
+    def focus(self):
+        win.SetForegroundWindow(self._hwnd)
+
+    @property
+    def has_focus(self):
+        return self._hwnd == win.GetForegroundWindow()

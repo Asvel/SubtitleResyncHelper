@@ -44,8 +44,11 @@ class FormTimeMapper(QDialog, Ui_FormTimeMapper):
         self.shortcut_dellast.activated.connect(self.shortcut_dellast_activated)
         self.shortcut_finish = QxtGlobalShortcut(QKeySequence("F11"))
         self.shortcut_finish.activated.connect(self.shortcut_finish_activated)
+        self.shortcut_next = QxtGlobalShortcut(QKeySequence("Tab"))
+        self.shortcut_next.activated.connect(self.shortcut_next_activated)
 
         self.players = [Player(x) for x in self.filepaths]
+        self.players[0].focus()
 
     def closeEvent(self, event):
 
@@ -73,6 +76,7 @@ class FormTimeMapper(QDialog, Ui_FormTimeMapper):
         del self.shortcut_addmap
         del self.shortcut_dellast
         del self.shortcut_finish
+        del self.shortcut_next
         for p in self.players:
             p.close()
 
@@ -110,6 +114,14 @@ class FormTimeMapper(QDialog, Ui_FormTimeMapper):
         else:
             self.showinfo("获取时间失败", type_='error')
 
+    def focus_next_player(self):
+        next_index = 0
+        for i in range(len(self.players)):
+            if self.players[i].has_focus:
+                next_index = (i+1) % len(self.players)
+                break
+        self.players[next_index].focus()
+
     def shortcut_addpart_activated(self):
         self.grabtimes(src_only=True)
 
@@ -121,6 +133,9 @@ class FormTimeMapper(QDialog, Ui_FormTimeMapper):
 
     def shortcut_finish_activated(self):
         self.close()
+
+    def shortcut_next_activated(self):
+        self.focus_next_player()
 
     def showinfo(self, s, type_='normal'):
         self.ct_info.setText(s)
