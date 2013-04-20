@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'main.ui'
 #
-# Created: Sat Apr 20 19:09:12 2013
+# Created: Sat Apr 20 21:54:59 2013
 #      by: PyQt4 UI code generator 4.9.6
 #
 # WARNING! All changes made in this file will be lost!
@@ -190,7 +190,7 @@ class Ui_MainWindow(object):
         MainWindow.setTabOrder(self.ct_clean_dst, self.ct_start)
 
     def retranslateUi(self, MainWindow):
-        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow", None))
+        MainWindow.setWindowTitle(_translate("MainWindow", "SubtitleResyncHelper", None))
         self.ct_groupbox_src.setTitle(_translate("MainWindow", "原始文件", None))
         self.ct_tree_src.headerItem().setText(0, _translate("MainWindow", "name", None))
         self.ct_tree_src.headerItem().setText(1, _translate("MainWindow", "dir", None))
