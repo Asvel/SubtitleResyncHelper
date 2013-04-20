@@ -14,6 +14,15 @@ filedialog_lastdir = ""
 fileext_video = ["mkv", "mp4"]
 fileext_subtitle = ["ass", "ssa", "srt"]
 
+shortcut = {
+    'main_start': 'F2',
+    'timemaper_addpart': 'F4',
+    'timemaper_addmap': 'F5',
+    'timemaper_dellast': 'F9',
+    'timemaper_finish': 'F11',
+    'timemaper_next': 'Tab',
+}
+
 _config_path = _os.path.join(_os.path.dirname(_sys.argv[0]), "config.json")
 
 
@@ -24,9 +33,12 @@ def _load():
         global_ = globals()
         for k in global_:
             if not k.startswith('_') and k in config:
-                global_[k] = config[k]
+                if isinstance(global_[k], dict):
+                    global_[k].update(config[k])
+                else:
+                    global_[k] = config[k]
     else:
-        _logging.warning("配置文件 {} 不存在，使用默认配置".format(
+        _logging.warning("配置文件 {} 无法访问，使用默认配置".format(
             _config_path))
 _load()
 

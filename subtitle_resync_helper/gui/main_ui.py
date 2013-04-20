@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'main.ui'
 #
-# Created: Sat Apr 13 17:56:45 2013
+# Created: Sat Apr 20 19:09:12 2013
 #      by: PyQt4 UI code generator 4.9.6
 #
 # WARNING! All changes made in this file will be lost!
@@ -205,6 +205,5 @@ class Ui_MainWindow(object):
         self.ct_remove_dst.setText(_translate("MainWindow", "移除", None))
         self.ct_clear_dst.setText(_translate("MainWindow", "清空", None))
         self.ct_clean_dst.setText(_translate("MainWindow", "清理", None))
-        self.ct_start.setText(_translate("MainWindow", "开始 (F2)", None))
-        self.ct_start.setShortcut(_translate("MainWindow", "F2", None))
+        self.ct_start.setText(_translate("MainWindow", "开始", None))
 

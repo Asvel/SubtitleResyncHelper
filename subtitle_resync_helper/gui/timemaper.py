@@ -36,15 +36,20 @@ class FormTimeMapper(QDialog, Ui_FormTimeMapper):
         self.showinfo("F5获取映射 F4获取分段")
 
     def showEvent(self, event):
-        self.shortcut_addpart = QxtGlobalShortcut(QKeySequence("F4"))
+        self.shortcut_addpart = QxtGlobalShortcut(QKeySequence(
+            config.shortcut['timemaper_addpart']))
         self.shortcut_addpart.activated.connect(self.shortcut_addpart_activated)
-        self.shortcut_addmap = QxtGlobalShortcut(QKeySequence("F5"))
+        self.shortcut_addmap = QxtGlobalShortcut(QKeySequence(
+            config.shortcut['timemaper_addmap']))
         self.shortcut_addmap.activated.connect(self.shortcut_addmap_activated)
-        self.shortcut_dellast = QxtGlobalShortcut(QKeySequence("F9"))
+        self.shortcut_dellast = QxtGlobalShortcut(QKeySequence(
+            config.shortcut['timemaper_dellast']))
         self.shortcut_dellast.activated.connect(self.shortcut_dellast_activated)
-        self.shortcut_finish = QxtGlobalShortcut(QKeySequence("F11"))
+        self.shortcut_finish = QxtGlobalShortcut(QKeySequence(
+            config.shortcut['timemaper_finish']))
         self.shortcut_finish.activated.connect(self.shortcut_finish_activated)
-        self.shortcut_next = QxtGlobalShortcut(QKeySequence("Tab"))
+        self.shortcut_next = QxtGlobalShortcut(QKeySequence(
+            config.shortcut['timemaper_next']))
         self.shortcut_next.activated.connect(self.shortcut_next_activated)
 
         self.players = [Player(x) for x in self.filepaths]

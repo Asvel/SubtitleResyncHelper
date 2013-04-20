@@ -40,6 +40,8 @@ class FormMain(QMainWindow, Ui_MainWindow):
         for qtree in self.ct_trees:
             qtree[1].hideColumn(1)
 
+        self.ct_start.setShortcut(config.shortcut['main_start'])
+
     def __new_qtreewidgetitem(self, filename):
         qitem = QTreeWidgetItem()
         qitem.filename = filename

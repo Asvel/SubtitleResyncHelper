@@ -278,10 +278,7 @@
          </sizepolicy>
         </property>
         <property name="text">
-         <string>开始 (F2)</string>
-        </property>
-        <property name="shortcut">
-         <string>F2</string>
+         <string>开始</string>
         </property>
        </widget>
       </item>
