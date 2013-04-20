@@ -19,4 +19,4 @@ def parse(s):
 
 
 def is_approx_equal(time1, time2):
-    return abs(time1.ms_time - time2.ms_time) < 50
+    return abs(time1.ms_time - time2.ms_time) < 20
