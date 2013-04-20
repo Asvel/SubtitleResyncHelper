@@ -159,7 +159,7 @@ class FormMain(QMainWindow, Ui_MainWindow):
             print(timemapper.timemap)
         finally:
             self.show()
-            self.setFocus()
+            self.activateWindow()
 
         # 准备文件名
         videos_src = []
@@ -167,9 +167,9 @@ class FormMain(QMainWindow, Ui_MainWindow):
         timelists_src = []
         timelists_dst = []
         subtitless_src = []
-        for type, tree, video, timelist in \
+        for type_, tree, video, timelist in \
             zip(types, trees, videos, timemapper.timemap):
-            if type == 'src':
+            if type_ == 'src':
                 videos_src.append(video)
                 timelists_src.append(timelist)
                 subtitless_src.append([x.filename for x in

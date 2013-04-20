@@ -59,7 +59,7 @@ class FormTimeMapper(QDialog, Ui_FormTimeMapper):
 
     def closeEvent(self, event):
 
-        self.setFocus()
+        self.activateWindow()
 
         # 结尾校验
         endcheck = True
@@ -84,6 +84,7 @@ class FormTimeMapper(QDialog, Ui_FormTimeMapper):
         del self.shortcut_dellast
         del self.shortcut_finish
         del self.shortcut_next
+        del self.shortcut_next_with_time
         for p in self.players:
             p.close()
 

@@ -34,7 +34,10 @@ class PlayerWin(Player):
         return time
 
     def activate(self):
-        win.SetForegroundWindow(self._hwnd)
+        try:
+            win.SetForegroundWindow(self._hwnd)
+        except Exception:
+            pass
 
     @property
     def is_active(self):
