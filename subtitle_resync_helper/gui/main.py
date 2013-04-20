@@ -201,6 +201,7 @@ class FormMain(QMainWindow, Ui_MainWindow):
                     # 调整字幕
                     subs = pysubs.load(sub_src)
                     shifter.shift(subs, timedelta)
+                    subs.info['Resync Info'] = str(timedelta)
                     subs.save(sub_dst)
 
     def ct_tree_itemexpanded(self, item):
