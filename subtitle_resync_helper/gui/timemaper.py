@@ -33,8 +33,6 @@ class FormTimeMapper(QDialog, Ui_FormTimeMapper):
         self.ct_table.horizontalHeader().setResizeMode(
             QHeaderView.ResizeToContents)
 
-        self.showinfo("F5获取映射 F4获取分段")
-
     def showEvent(self, event):
         self.shortcut_addpart = QxtGlobalShortcut(QKeySequence(
             config.shortcut['timemaper_addpart']))
