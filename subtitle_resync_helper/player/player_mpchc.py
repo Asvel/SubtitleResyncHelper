@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
-import re
-from time import sleep
+import subprocess
+from uuid import uuid4 as uuid
 
 from subtitle_resync_helper import config, win
 from subtitle_resync_helper.retry import retry
@@ -9,35 +9,101 @@ from subtitle_resync_helper.time import Time
 from subtitle_resync_helper.player.player_win import PlayerWin as Player
 
 
+class CMD:
+    CONNECT            = 0x50000000
+    STATE              = 0x50000001
+    PLAYMODE           = 0x50000002
+    NOWPLAYING         = 0x50000003
+    LISTSUBTITLETRACKS = 0x50000004
+    LISTAUDIOTRACKS    = 0x50000005
+    CURRENTPOSITION    = 0x50000007
+    NOTIFYSEEK         = 0x50000008
+    NOTIFYENDOFSTREAM  = 0x50000009
+    VERSION            = 0x5000000A
+    PLAYLIST           = 0x50000006
+    DISCONNECT         = 0x5000000B
+    OPENFILE           = 0xA0000000
+    STOP               = 0xA0000001
+    CLOSEFILE          = 0xA0000002
+    PLAYPAUSE          = 0xA0000003
+    PLAY               = 0xA0000004
+    PAUSE              = 0xA0000005
+    ADDTOPLAYLIST      = 0xA0001000
+    CLEARPLAYLIST      = 0xA0001001
+    STARTPLAYLIST      = 0xA0001002
+    REMOVEFROMPLAYLIST = 0xA0001003
+    SETPOSITION        = 0xA0002000
+    SETAUDIODELAY      = 0xA0002001
+    SETSUBTITLEDELAY   = 0xA0002002
+    SETINDEXPLAYLIST   = 0xA0002003
+    SETAUDIOTRACK      = 0xA0002004
+    SETSUBTITLETRACK   = 0xA0002005
+    GETSUBTITLETRACKS  = 0xA0003000
+    GETCURRENTPOSITION = 0xA0003004
+    JUMPOFNSECONDS     = 0xA0003005
+    GETVERSION         = 0xA0003006
+    GETAUDIOTRACKS     = 0xA0003001
+    GETNOWPLAYING      = 0xA0003002
+    GETPLAYLIST        = 0xA0003003
+    TOGGLEFULLSCREEN   = 0xA0004000
+    JUMPFORWARDMED     = 0xA0004001
+    JUMPBACKWARDMED    = 0xA0004002
+    INCREASEVOLUME     = 0xA0004003
+    DECREASEVOLUME     = 0xA0004004
+    SHADER_TOGGLE      = 0xA0004005
+    CLOSEAPP           = 0xA0004006
+    SETSPEED           = 0xA0004008
+    OSDSHOWMESSAGE     = 0xA0005000
+
+
 class PlayerMPCHC(Player):
 
-    def _generate_args(self, filepath):
-        return [config.playerpath, "/open", "/new", filepath]
+    def _open(self):
+        wnd = win.WNDCLASS()
+        wnd.lpfnWndProc = {win.WM_COPYDATA:self._on_copy_data}
+        wnd.lpszClassName = str(uuid())
+        wnd.hInstance = win.GetModuleHandle(None)
+        self._hwnd_listener = win.CreateWindow(win.RegisterClass(wnd),
+            "srhListener",0, 0, 0, 0, 0, 0, 0, wnd.hInstance, None)
 
-    def _get_main_window_handle(self):
-        return win.FindWindow("MPC-HC", None)
+        self._player = subprocess.Popen(self._generate_args())
+
+        self._hwnd = None
+        self._pump_message_until(lambda : self._hwnd is not None)
+
+        win.MaximumWindow(self._hwnd)
+
+    def _generate_args(self):
+        return [config.playerpath,
+                "/open", "/new", self._filepath,
+                "/slave", str(self._hwnd_listener)]
+
+    def _send_message(self, command, message=""):
+        win.CopyData_SendString(self._hwnd, command, message)
+
+    def _on_copy_data(self, hwnd, msg, wparam, lparam):
+        command, message = win.CopyData_ParseString(lparam)
+        self._parse_message(command, message)
+
+    def _parse_message(self, command, message):
+        if command == CMD.CONNECT:
+            self._hwnd = int(message)
+        elif command == CMD.CURRENTPOSITION:
+            self._time = float(message)
+
+    def _pump_message_until(self, condition):
+        def pump_message():
+            win.PumpWaitingMessages()
+            return condition()
+        retry(pump_message)
+
+    def _close(self):
+        self._send_message(CMD.CLOSEAPP)
+        win.SendMessage(self._hwnd_listener, win.WM_CLOSE, 0, 0)
 
     def grabtime(self):
-        hwnds = win.FindWindows(class_="#32770", parent=self._mainhwnd)
-        for hwnd in hwnds:
-            win.SendMessage(hwnd, win.WM_CLOSE, 0, 0)
-        if len(hwnds) > 0:
-            sleep(0.1)
-
-        def get_jumpto_hwnd():
-            win.SendKey(self._mainhwnd, "Ctrl+G")
-            return retry(lambda:win.FindWindows(
-                class_="#32770", parent=self._mainhwnd)[0], maxcount=5)
-        hwnd = retry(get_jumpto_hwnd, maxcount=3)
-
-        edit = retry(lambda:win.FindWindows(
-            class_='Edit', parent=hwnd, top_level=False)[0])
-        text = win.GetWindowTextX(edit)
-
-        try:
-            match = re.match(r"^(\d+?), (\d+\.?\d*)$", text)
-            time = Time(frame=int(match.group(1)), fps=float(match.group(2)))
-        finally:
-            for hwnd in win.FindWindows(class_="#32770", parent=self._mainhwnd):
-                win.SendMessage(hwnd, win.WM_CLOSE, 0, 0)
+        self._time = None
+        self._send_message(CMD.GETCURRENTPOSITION)
+        self._pump_message_until(lambda : self._time is not None)
+        time = Time(s=self._time) if self._time is not None else None
         return time

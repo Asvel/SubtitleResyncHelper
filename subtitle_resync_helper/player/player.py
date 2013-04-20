@@ -16,11 +16,11 @@ class Player(object):
     def __del__(self):
         self.close()
 
-    def _generate_args(self, filepath):
-        return [config.playerpath, filepath]
+    def _generate_args(self):
+        return [config.playerpath, self._filepath]
 
     def _open(self):
-        self._player = subprocess.Popen(self._generate_args(self._filepath))
+        self._player = subprocess.Popen(self._generate_args())
 
     def _close(self):
         self._player.terminate()
@@ -31,7 +31,7 @@ class Player(object):
     def open(self):
         if not self._opened:
             self._open()
-            self._opened = False
+            self._opened = True
 
     def grabtime(self):
         raise NotImplementedError()

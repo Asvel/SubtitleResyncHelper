@@ -9,8 +9,8 @@ def retry(func, initdelay=0.01, maxcount=10):
         time.sleep(initdelay * (2 ** count))
         try:
             ret = func()
-        except:
+        except Exception:
             pass
-        if ret is not None:
+        if ret:
             break
     return ret

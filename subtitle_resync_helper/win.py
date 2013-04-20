@@ -210,3 +210,22 @@ def FindWindows(class_ = None, title = None, parent = None, process = None,
     if enabled_only:
         windows = [x for x in windows if try_(lambda:IsWindowEnabled(x))]
     return windows
+
+class COPYDATASTRUCT(Structure):
+    _fields_ = [
+        ('dwData', LPARAM),
+        ('cbData', DWORD),
+        ('lpData', c_void_p)
+    ]
+PCOPYDATASTRUCT = ctypes.POINTER(COPYDATASTRUCT)
+
+def CopyData_SendString(hwnd, dwData, lpData=""):
+    data = create_unicode_buffer(lpData)
+    CDS = COPYDATASTRUCT(dwData, sizeof(data), cast(data, c_void_p))
+    SendMessage(hwnd, WM_COPYDATA, 0, addressof(CDS))
+
+def CopyData_ParseString(lParam):
+    pCDS = cast(lParam, PCOPYDATASTRUCT)
+    dwData = pCDS.contents.dwData
+    lpData = wstring_at(pCDS.contents.lpData)
+    return dwData, lpData
