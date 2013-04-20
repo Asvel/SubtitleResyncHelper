@@ -29,6 +29,6 @@ class PlayerWin(Player):
         text = win.GetWindowTextX(hwnd).strip()
         try:
             time = self._parse_time(text)
-        except:
+        except Exception:
             time = None
         return time

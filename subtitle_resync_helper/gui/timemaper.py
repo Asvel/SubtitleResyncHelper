@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+import logging
+
 from PyQt4.QtCore import Qt, pyqtSignal
 from PyQt4.QtGui import (QDialog, QKeySequence, QApplication,
                          QTableWidgetItem, QHeaderView, QMessageBox)
@@ -93,8 +95,9 @@ class FormTimeMapper(QDialog, Ui_FormTimeMapper):
                 else:
                     text = str(player.grabtime())
                 times.append(text)
-        except Exception:
+        except Exception as ex:
             times = None
+            logging.error("获取时间失败 {}".format(str(ex)))
         if times is not None:
             count = self.ct_table.rowCount()
             self.ct_table.setRowCount(count + 1)

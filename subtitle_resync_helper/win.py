@@ -184,7 +184,7 @@ def FindWindows(class_ = None, title = None, parent = None, process = None,
     def try_(func):
         try:
             return func()
-        except:
+        except Exception:
             return False
 
     if top_level:
