@@ -24,7 +24,7 @@ class PlayerWin(Player):
             win.SendMessage(hwnd, win.WM_CLOSE, 0, 0)
         win.PostMessage(self._hwnd, win.WM_CLOSE, 0, 0)
 
-    def grabtime(self):
+    def _gettime(self):
         hwnd = win.GetGUIThreadInfo(0).hwndFocus
         text = win.GetWindowTextX(hwnd).strip()
         try:
@@ -33,9 +33,9 @@ class PlayerWin(Player):
             time = None
         return time
 
-    def focus(self):
+    def activate(self):
         win.SetForegroundWindow(self._hwnd)
 
     @property
-    def has_focus(self):
+    def is_active(self):
         return self._hwnd == win.GetForegroundWindow()

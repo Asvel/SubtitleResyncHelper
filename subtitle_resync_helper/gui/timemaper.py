@@ -55,7 +55,7 @@ class FormTimeMapper(QDialog, Ui_FormTimeMapper):
             self.shortcut_next_with_time_activated)
 
         self.players = [Player(x) for x in self.filepaths]
-        self.players[0].focus()
+        self.players[0].activate()
 
     def closeEvent(self, event):
 
@@ -106,7 +106,7 @@ class FormTimeMapper(QDialog, Ui_FormTimeMapper):
                 if src_only and type != "src":
                     text = None
                 else:
-                    text = str(player.grabtime())
+                    text = str(player.time)
                 times.append(text)
         except Exception as ex:
             times = None
@@ -123,11 +123,11 @@ class FormTimeMapper(QDialog, Ui_FormTimeMapper):
 
     def focus_next_player(self, with_time_sync=False):
         current_index = next((i for i in range(len(self.players))
-            if self.players[i].has_focus), len(self.players)-1)
+            if self.players[i].is_active), len(self.players)-1)
         next_player = self.players[(current_index+1) % len(self.players)]
-        next_player.focus()
+        next_player.activate()
         if with_time_sync:
-            next_player.settime(self.players[current_index].grabtime())
+            next_player.time = self.players[current_index].time
 
     def shortcut_addpart_activated(self):
         self.grabtimes(src_only=True)

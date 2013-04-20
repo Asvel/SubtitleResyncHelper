@@ -89,7 +89,7 @@ class PlayerMPCHC(Player):
         if command == CMD.CONNECT:
             self._hwnd = int(message)
         elif command == CMD.CURRENTPOSITION:
-            self._time = float(message)
+            self.__time = float(message)
 
     def _pump_message_until(self, condition):
         def pump_message():
@@ -101,13 +101,13 @@ class PlayerMPCHC(Player):
         self._send_message(CMD.CLOSEAPP)
         win.SendMessage(self._hwnd_listener, win.WM_CLOSE, 0, 0)
 
-    def grabtime(self):
-        self._time = None
+    def _gettime(self):
+        self.__time = None
         self._send_message(CMD.GETCURRENTPOSITION)
-        self._pump_message_until(lambda : self._time is not None)
-        time = Time(s=self._time) if self._time is not None else None
+        self._pump_message_until(lambda : self.__time is not None)
+        time = Time(s=self.__time) if self.__time is not None else None
         return time
 
-    def settime(self, time):
+    def _settime(self, time):
         self._send_message(CMD.SETPOSITION, str(time.ms_time/1000))
 

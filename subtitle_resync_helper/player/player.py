@@ -28,15 +28,26 @@ class Player(object):
     def _parse_time(self, s):
         return time.parse(s)
 
+    def _gettime(self):
+        raise NotImplementedError()
+
+    def _settime(self, time):
+        raise NotImplementedError()
+
     def open(self):
         if not self._opened:
             self._open()
             self._opened = True
 
-    def grabtime(self):
-        raise NotImplementedError()
-
     def close(self):
         if self._opened:
             self._close()
             self._opened = False
+
+    @property
+    def time(self):
+        return self._gettime()
+
+    @time.setter
+    def time(self, value):
+        self._settime(value)
