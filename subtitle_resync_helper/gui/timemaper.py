@@ -49,6 +49,8 @@ class FormTimeMapper(QDialog, Ui_FormTimeMapper):
 
     def closeEvent(self, event):
 
+        self.setFocus()
+
         # 结尾校验
         endcheck = True
         try:
