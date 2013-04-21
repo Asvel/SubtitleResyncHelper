@@ -28,31 +28,26 @@ class FormTimeMapper(QDialog, Ui_FormTimeMapper):
         if callback is not None:
             self.finished.connect(callback)
 
+        self.shortcuts = []
+
         self.ct_table.setRowCount(0)
         self.ct_table.setColumnCount(len(self.filepaths))
         self.ct_table.horizontalHeader().setResizeMode(
             QHeaderView.ResizeToContents)
 
     def showEvent(self, event):
-        self.shortcut_addpart = QxtGlobalShortcut(QKeySequence(
-            config.shortcut['timemaper_addpart']))
-        self.shortcut_addpart.activated.connect(self.shortcut_addpart_activated)
-        self.shortcut_addmap = QxtGlobalShortcut(QKeySequence(
-            config.shortcut['timemaper_addmap']))
-        self.shortcut_addmap.activated.connect(self.shortcut_addmap_activated)
-        self.shortcut_dellast = QxtGlobalShortcut(QKeySequence(
-            config.shortcut['timemaper_dellast']))
-        self.shortcut_dellast.activated.connect(self.shortcut_dellast_activated)
-        self.shortcut_finish = QxtGlobalShortcut(QKeySequence(
-            config.shortcut['timemaper_finish']))
-        self.shortcut_finish.activated.connect(self.shortcut_finish_activated)
-        self.shortcut_next = QxtGlobalShortcut(QKeySequence(
-            config.shortcut['timemaper_next']))
-        self.shortcut_next.activated.connect(self.shortcut_next_activated)
-        self.shortcut_next_with_time = QxtGlobalShortcut(QKeySequence(
-            config.shortcut['timemaper_next_with_time']))
-        self.shortcut_next_with_time.activated.connect(
-            self.shortcut_next_with_time_activated)
+        self.add_shortcut(config.shortcut['timemaper_addpart'],
+                          self.shortcut_addpart_activated)
+        self.add_shortcut(config.shortcut['timemaper_addmap'],
+                          self.shortcut_addmap_activated)
+        self.add_shortcut(config.shortcut['timemaper_dellast'],
+                          self.shortcut_dellast_activated)
+        self.add_shortcut(config.shortcut['timemaper_finish'],
+                          self.shortcut_finish_activated)
+        self.add_shortcut(config.shortcut['timemaper_next'],
+                          self.shortcut_next_activated)
+        self.add_shortcut(config.shortcut['timemaper_next_with_time'],
+                          self.shortcut_next_with_time_activated)
 
         self.players = [Player(x) for x in self.filepaths]
         self.players[0].activate()
@@ -79,12 +74,7 @@ class FormTimeMapper(QDialog, Ui_FormTimeMapper):
                 event.ignore()
                 return
 
-        del self.shortcut_addpart
-        del self.shortcut_addmap
-        del self.shortcut_dellast
-        del self.shortcut_finish
-        del self.shortcut_next
-        del self.shortcut_next_with_time
+        self.shortcuts.clear()
         for p in self.players:
             p.close()
 
@@ -129,6 +119,11 @@ class FormTimeMapper(QDialog, Ui_FormTimeMapper):
         next_player.activate()
         if with_time_sync:
             next_player.time = self.players[current_index].time
+
+    def add_shortcut(self, key_sequence, slot):
+        shortcut = QxtGlobalShortcut(QKeySequence(key_sequence))
+        shortcut.activated.connect(slot)
+        self.shortcuts.append(shortcut)
 
     def shortcut_addpart_activated(self):
         self.grabtimes(src_only=True)
