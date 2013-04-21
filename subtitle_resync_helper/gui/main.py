@@ -204,6 +204,9 @@ class FormMain(QMainWindow, Ui_MainWindow):
                     subs.info['Resync Info'] = str(timedelta)
                     subs.save(sub_dst)
 
+        self.statusBar().showMessage("调整成功")
+
+
     def ct_tree_itemexpanded(self, item):
         self.sender().resizeColumnToContents(0)
 
