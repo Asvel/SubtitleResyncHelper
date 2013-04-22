@@ -6,6 +6,7 @@ from pysubs import Time
 
 
 def parse(s):
+    """尝试解析时间字符串"""
     t = None
     for fmt in ["%M:%S.%f", "%H:%M:%S.%f"]:
         try:
@@ -19,4 +20,5 @@ def parse(s):
 
 
 def is_approx_equal(time1, time2):
+    """判断两个时间是否近似相等"""
     return abs(time1.ms_time - time2.ms_time) < 20

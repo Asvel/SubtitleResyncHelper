@@ -7,6 +7,10 @@ from subtitle_resync_helper.time import Time
 
 
 def normalize(timemap, endcheck=False):
+    """一般化时间映射表，生成时间偏移表
+
+    endcheck 是否包含结尾校验
+    """
     timemap = [x for x in timemap if 1 <= len(x) <= 2] + [[Time(h=100)]]
     timedelta = []
     for i in range(len(timemap)-1):

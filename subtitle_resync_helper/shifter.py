@@ -11,6 +11,10 @@ SHIFT_BY_END = 3    # 按结束时间的调整量调整
 
 
 def shift(subs, timedelta, diffdeltahandle=SHIFT_APART):
+    """根据时间偏移表 timedelta 调整字幕 subs 的时间轴
+
+    diffdeltahandle 为开始时间与结束时间调整量不同时的处理方式
+    """
     if len(timedelta) > 0:
         for line in subs:
             delta_start = next(x for x in timedelta
