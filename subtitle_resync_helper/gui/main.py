@@ -157,7 +157,6 @@ class FormMain(QMainWindow, Ui_MainWindow):
             self.hide()
             timemapper = FormTimeMapper(types, videos)
             timemapper.exec()
-            print(timemapper.timemap)
         finally:
             self.show()
             self.activateWindow()
