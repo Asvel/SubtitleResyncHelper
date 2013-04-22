@@ -148,7 +148,8 @@ class FormMain(QMainWindow, Ui_MainWindow):
         # 文件列表
         types, trees = zip(*self.ct_trees)
         if min([x.topLevelItemCount() for x in trees]) < 1:
-            QMessageBox.error(self, "错误", "文件列表中没有文件")
+            QMessageBox.critical(self, "错误", "文件列表中没有文件")
+            return
         videos = [x.topLevelItem(0).filename for x in trees]
 
         # 获取时间映射表
