@@ -35,6 +35,14 @@ class FormTimeMapper(QDialog, Ui_FormTimeMapper):
         self.ct_table.horizontalHeader().setResizeMode(
             QHeaderView.ResizeToContents)
 
+    def _get_texts_by_row(self, row):
+        return [self.ct_table.item(row, i).text()
+                for i in range(self.ct_table.columnCount())]
+
+    def _get_texts_by_column(self, column):
+        return [self.ct_table.item(i, column).text()
+                for i in range(self.ct_table.rowCount())]
+
     def showEvent(self, event):
         self.add_shortcut(config.shortcut['timemaper_addpart'],
                           self.shortcut_addpart_activated)
@@ -57,20 +65,12 @@ class FormTimeMapper(QDialog, Ui_FormTimeMapper):
         self.activateWindow()
 
         # 结尾校验
-        endcheck = True
-        try:
-            count = self.ct_table.rowCount()
-            delta = [time.parse(self.ct_table.item(count-1, i).text()) -
-                     time.parse(self.ct_table.item(count-2, i).text())
-                     for i in range(self.ct_table.columnCount())]
-            if not time.is_approx_equal(max(delta), min(delta)):
-                endcheck = False
-        except Exception:  # count < 2 or item(count-1) is part
-            endcheck = False
-        if not endcheck and QMessageBox.warning(self, "警告",
+        endcheck = self._is_same_time_delta(-1, -2)
+        if not endcheck:
+            result = QMessageBox.warning(self, "警告",
             "结尾校验没用通过，可能遗漏了时间映射，是否继续？",
-            QMessageBox.Yes | QMessageBox.No,
-            QMessageBox.No) != QMessageBox.Yes:
+            QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+            if result != QMessageBox.Yes:
                 event.ignore()
                 return
 
@@ -119,6 +119,38 @@ class FormTimeMapper(QDialog, Ui_FormTimeMapper):
         next_player.activate()
         if with_time_sync:
             next_player.time = self.players[current_index].time
+
+    def _is_same_time_delta(self, row_index_1, row_index_2):
+        count = self.ct_table.rowCount()
+        if row_index_1 < 0:
+            row_index_1 += count
+        if row_index_2 < 0:
+            row_index_2 += count
+
+        # 行号存在
+        if not (0 <= row_index_1 < count and 0 <= row_index_2 < count):
+            return False
+
+        texts1 = self._get_texts_by_row(row_index_1)
+        texts2 = self._get_texts_by_row(row_index_2)
+
+        # 所用项目非空（都是映射而不是分段）
+        if not (all(texts1) and all(texts2)):
+            return False
+
+        # 时间都能正常解析
+        try:
+            times1 = [time.parse(x) for x in texts1]
+            times2 = [time.parse(x) for x in texts2]
+        except:
+            return False
+
+        # 时间差在允许的范围内
+        delta = [time1-time2 for time1,time2 in zip(times1,times2)]
+        if not time.is_approx_equal(min(delta), max(delta)):
+            return False
+
+        return True
 
     def add_shortcut(self, key_sequence, slot):
         shortcut = QxtGlobalShortcut(QKeySequence(key_sequence))
