@@ -24,6 +24,12 @@ shortcut = {
     'timemaper_next_with_time': 'Ctrl+Tab',
 }
 
+timemaper_color = [
+    ('#111', '#FFF'),
+    ('#111', '#CCC')
+]
+
+
 _config_path = _os.path.join(_os.path.dirname(_sys.argv[0]), "config.json")
 
 
