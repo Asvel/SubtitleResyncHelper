@@ -78,7 +78,7 @@ class FormTimeMapper(QDialog, Ui_FormTimeMapper):
                 if src_only and type != "src":
                     text = None
                 else:
-                    text = str(player.time)
+                    text = format(player.time, "srt")
                 times.append(text)
         except Exception as ex:
             times = None

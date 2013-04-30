@@ -8,7 +8,7 @@ from pysubs import Time
 def parse(s):
     """尝试解析时间字符串"""
     t = None
-    for fmt in ["%M:%S.%f", "%H:%M:%S.%f"]:
+    for fmt in ["%M:%S.%f", "%H:%M:%S.%f", "%H:%M:%S,%f"]:
         try:
             t = datetime.datetime.strptime(s, fmt).time()
             break
