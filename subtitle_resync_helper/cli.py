@@ -36,8 +36,6 @@ def run(args=sys.argv):
     parser.add_argument('-d', '--diffdeltahandle', default='apart',
                         choices=['stop', 'apart', 'start', 'end'],
                         help="开始结束时间调整量不同的处理方法，默认为 apart")
-    parser.add_argument('-ec', '--endcheck', action="store_true",
-                        help="时间映射表结尾存在校验项")
     args = parser.parse_args(args)
 
     ftm = args.timemap
@@ -55,14 +53,12 @@ def run(args=sys.argv):
     }
     diffdeltahandle = diffdeltahandledict[args.diffdeltahandle]
 
-    endcheck = args.endcheck
-
     tmap = []
     with open(ftm, encoding='utf-8') as f:
         for line in f:
             tmap.append([time.parse(x) for x in line.split()])
 
-    timedelta = timemap.normalize(tmap, endcheck)
+    timedelta = timemap.normalize(tmap)
 
     subs = pysubs.load(fni)
     shifter.shift(subs, timedelta, diffdeltahandle)

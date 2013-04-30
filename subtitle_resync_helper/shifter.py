@@ -2,7 +2,7 @@
 
 import logging
 
-from subtitle_resync_helper.time import Time
+from subtitle_resync_helper.time import Time, is_approx_equal
 
 SHIFT_STOP = 0      # 停止并返回
 SHIFT_APART = 1     # 分别按各自的调整量调整
@@ -21,7 +21,7 @@ def shift(subs, timedelta, diffdeltahandle=SHIFT_APART):
                 if line.start < x['until'])['delta']
             delta_end = next(x for x in timedelta
                 if line.end < x['until'])['delta']
-            if delta_start != delta_end:
+            if not is_approx_equal(delta_start, delta_end):
                 logging.warning("字幕 {} 的开始时间与结束时间调整量不同"
                                 .format(str(line)))
                 if diffdeltahandle == SHIFT_STOP:
@@ -32,13 +32,18 @@ def shift(subs, timedelta, diffdeltahandle=SHIFT_APART):
                     delta_end = delta_start
                 elif diffdeltahandle == SHIFT_BY_END:
                     delta_start = delta_end
+            delta = line.start - line.end
             line.start += delta_start
             if line.start < Time.zero:
                 line.start = Time.zero
-                logging.warning("字幕 {} 的开始时间调整后小于0".format(str(line)))
+                if delta != Time.zero:
+                    logging.warning(
+                        "字幕 {} 的开始时间调整后小于0".format(str(line)))
             line.end += delta_end
             if line.end < Time.zero:
                 line.end = Time.zero
-                logging.warning("字幕 {} 的结束时间调整后小于0".format(str(line)))
+                if delta != Time.zero:
+                    logging.warning(
+                        "字幕 {} 的结束时间调整后小于0".format(str(line)))
     else:
         logging.warning("时间偏移表为空")
