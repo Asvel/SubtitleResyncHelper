@@ -2,7 +2,7 @@
 
 import subprocess
 
-from subtitle_resync_helper import config, time
+from subsync import config, time
 
 
 class Player(object):

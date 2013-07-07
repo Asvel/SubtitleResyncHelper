@@ -6,7 +6,7 @@ import argparse
 
 import pysubs
 
-from subtitle_resync_helper import time, timemap, shifter
+from subsync import time, timemap, shifter
 
 
 def run(args=sys.argv):

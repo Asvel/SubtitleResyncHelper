@@ -3,10 +3,10 @@
 import subprocess
 from uuid import uuid4 as uuid
 
-from subtitle_resync_helper import config, win
-from subtitle_resync_helper.retry import retry
-from subtitle_resync_helper.time import Time
-from subtitle_resync_helper.player.player_win import PlayerWin as Player
+from subsync import config, win
+from subsync.retry import retry
+from subsync.time import Time
+from subsync.player.player_win import PlayerWin as Player
 
 
 class CMD:

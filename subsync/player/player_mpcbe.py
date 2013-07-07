@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-from subtitle_resync_helper import config, win
-from subtitle_resync_helper.player.player_mpchc import PlayerMPCHC as Player
-from subtitle_resync_helper.player.player_mpchc import CMD
+from subsync import config, win
+from subsync.player.player_mpchc import PlayerMPCHC as Player
+from subsync.player.player_mpchc import CMD
 
 
 class PlayerMPCBE(Player):

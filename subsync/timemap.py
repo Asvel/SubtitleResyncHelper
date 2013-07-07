@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from subtitle_resync_helper.time import Time
+from subsync.time import Time
 
 
 def normalize(timemap):

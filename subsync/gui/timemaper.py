@@ -8,8 +8,8 @@ from PyQt4.QtGui import (QDialog, QKeySequence, QTableWidgetItem, QHeaderView,
                          QMessageBox, QColor, QBrush, QItemSelectionModel)
 from pygs import QxtGlobalShortcut
 
-from subtitle_resync_helper import config, player, time
-from subtitle_resync_helper.gui.timemaper_ui import Ui_FormTimeMapper
+from subsync import config, player, time
+from subsync.gui.timemaper_ui import Ui_FormTimeMapper
 
 
 Player = player.getplayer(config.playername)

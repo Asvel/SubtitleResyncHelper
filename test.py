@@ -4,7 +4,7 @@ import sys
 
 from PyQt4.QtGui import QApplication
 
-from subtitle_resync_helper import config, gui
+from subsync import config, gui
 
 app = QApplication(sys.argv)
 window = gui.FormMain()

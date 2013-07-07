@@ -8,9 +8,9 @@ from PyQt4.QtCore import Qt, pyqtSignal
 from PyQt4.QtGui import (QMainWindow, QFileDialog, QMessageBox,
                          QTreeWidgetItem, QTreeWidget)
 
-from subtitle_resync_helper import config, timemap, shifter
-from subtitle_resync_helper.gui.timemaper import FormTimeMapper
-from subtitle_resync_helper.gui.main_ui import Ui_MainWindow
+from subsync import config, timemap, shifter
+from subsync.gui.timemaper import FormTimeMapper
+from subsync.gui.main_ui import Ui_MainWindow
 
 
 class FormMain(QMainWindow, Ui_MainWindow):

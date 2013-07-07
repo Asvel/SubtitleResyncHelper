@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
-from subtitle_resync_helper import config, win
-from subtitle_resync_helper.player.player import Player
+from subsync import config, win
+from subsync.player.player import Player
 
 
 class PlayerWin(Player):

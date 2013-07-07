@@ -21,4 +21,4 @@ def parse(s):
 
 def is_approx_equal(time1, time2):
     """判断两个时间是否近似相等"""
-    return abs(time1.ms_time - time2.ms_time) < 20
+    return abs(time1.ms_time - time2.ms_time) < 30
