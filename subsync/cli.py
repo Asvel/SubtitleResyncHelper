@@ -46,10 +46,10 @@ def run(args=sys.argv):
     logging.basicConfig(format='%(levelname)s\t: %(message)s', level=loglevel)
 
     diffdeltahandledict = {
-        'stop':shifter.SHIFT_STOP,
-        'apart':shifter.SHIFT_APART,
-        'start':shifter.SHIFT_BY_START,
-        'end':shifter.SHIFT_BY_END,
+        'stop': shifter.SHIFT_STOP,
+        'apart': shifter.SHIFT_APART,
+        'start': shifter.SHIFT_BY_START,
+        'end': shifter.SHIFT_BY_END,
     }
     diffdeltahandle = diffdeltahandledict[args.diffdeltahandle]
 

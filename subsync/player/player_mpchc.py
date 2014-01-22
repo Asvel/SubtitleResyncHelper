@@ -69,7 +69,7 @@ class PlayerMPCHC(Player):
         self._player = subprocess.Popen(self._generate_args())
 
         self._hwnd = None
-        self._pump_message_until(lambda : self._hwnd is not None)
+        self._pump_message_until(lambda: self._hwnd is not None)
 
         win.MaximumWindow(self._hwnd)
 
@@ -104,7 +104,7 @@ class PlayerMPCHC(Player):
     def _gettime(self):
         self.__time = None
         self._send_message(CMD.GETCURRENTPOSITION)
-        self._pump_message_until(lambda : self.__time is not None)
+        self._pump_message_until(lambda: self.__time is not None)
         time = Time(s=self.__time) if self.__time is not None else None
         return time
 

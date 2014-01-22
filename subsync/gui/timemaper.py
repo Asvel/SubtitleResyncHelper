@@ -14,6 +14,7 @@ from subsync.gui.timemaper_ui import Ui_FormTimeMapper
 
 Player = player.getplayer(config.playername)
 
+
 class FormTimeMapper(QDialog, Ui_FormTimeMapper):
 
     finished = pyqtSignal(list)
@@ -39,17 +40,17 @@ class FormTimeMapper(QDialog, Ui_FormTimeMapper):
 
     def showEvent(self, event):
         self._add_shortcut(config.shortcut['timemaper_addpart'],
-                          self.shortcut_addpart_activated)
+                           self.shortcut_addpart_activated)
         self._add_shortcut(config.shortcut['timemaper_addmap'],
-                          self.shortcut_addmap_activated)
+                           self.shortcut_addmap_activated)
         self._add_shortcut(config.shortcut['timemaper_dellast'],
-                          self.shortcut_dellast_activated)
+                           self.shortcut_dellast_activated)
         self._add_shortcut(config.shortcut['timemaper_finish'],
-                          self.shortcut_finish_activated)
+                           self.shortcut_finish_activated)
         self._add_shortcut(config.shortcut['timemaper_next'],
-                          self.shortcut_next_activated)
+                           self.shortcut_next_activated)
         self._add_shortcut(config.shortcut['timemaper_next_with_time'],
-                          self.shortcut_next_with_time_activated)
+                           self.shortcut_next_with_time_activated)
 
         self.players = [Player(x) for x in self.filepaths]
         self.players[0].activate()
@@ -120,7 +121,7 @@ class FormTimeMapper(QDialog, Ui_FormTimeMapper):
         # 所用项目非空（都是映射而不是分段）
         if all(times1) and all(times2):
             # 时间差在允许的范围内
-            delta = [time1-time2 for time1,time2 in zip(times1,times2)]
+            delta = [time1-time2 for time1, time2 in zip(times1, times2)]
             if time.is_approx_equal(min(delta), max(delta)):
                 return True
         return False

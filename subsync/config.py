@@ -49,6 +49,7 @@ def _load():
             _config_path))
 _load()
 
+
 def _save():
     config = {}
     for k, v in globals().items():

@@ -67,8 +67,8 @@ def GetChildWindows(hwnd):
     return windows
 
 
-def FindWindows(class_ = None, title = None, parent = None, process = None,
-                top_level = True, visible_only = True, enabled_only = False):
+def FindWindows(class_=None, title=None, parent=None, process=None,
+                top_level=True, visible_only=True, enabled_only=False):
     def try_(func):
         try:
             return func()
