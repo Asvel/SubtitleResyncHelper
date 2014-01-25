@@ -6,7 +6,7 @@ from os import path
 import pysubs
 
 import subsync
-from subsync import time, timemap
+from subsync import config, time, timemap
 from subsync.time import Time
 from subsync.util import dump_readable_json
 
@@ -78,6 +78,7 @@ class Subtitle:
         """
         info = {
             'version': 'subsync-' + subsync.__version__,
+            'media_player': config.playername,
             'source_media': path.basename(source_media_path),
             'target_media': path.basename(target_media_path),
             'source_subtitle': path.basename(self._filepath),
