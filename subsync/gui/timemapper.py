@@ -10,7 +10,7 @@ from pygs import QxtGlobalShortcut
 
 from subsync import config, player, time, mediainfo
 from subsync.time import Time
-from subsync.gui.timemaper_ui import Ui_FormTimeMapper
+from subsync.gui.timemapper_ui import Ui_FormTimeMapper
 
 
 Player = player.getplayer(config.playername)
@@ -42,17 +42,17 @@ class FormTimeMapper(QDialog, Ui_FormTimeMapper):
         self.shortcuts = []
 
     def showEvent(self, event):
-        self._add_shortcut(config.shortcut['timemaper_addpart'],
+        self._add_shortcut(config.shortcut['timemapper_addpart'],
                            self.shortcut_addpart_activated)
-        self._add_shortcut(config.shortcut['timemaper_addmap'],
+        self._add_shortcut(config.shortcut['timemapper_addmap'],
                            self.shortcut_addmap_activated)
-        self._add_shortcut(config.shortcut['timemaper_dellast'],
+        self._add_shortcut(config.shortcut['timemapper_dellast'],
                            self.shortcut_dellast_activated)
-        self._add_shortcut(config.shortcut['timemaper_finish'],
+        self._add_shortcut(config.shortcut['timemapper_finish'],
                            self.shortcut_finish_activated)
-        self._add_shortcut(config.shortcut['timemaper_next'],
+        self._add_shortcut(config.shortcut['timemapper_next'],
                            self.shortcut_next_activated)
-        self._add_shortcut(config.shortcut['timemaper_next_with_time'],
+        self._add_shortcut(config.shortcut['timemapper_next_with_time'],
                            self.shortcut_next_with_time_activated)
 
         self.players = [Player(x) for x in self.filepaths]
@@ -134,7 +134,7 @@ class FormTimeMapper(QDialog, Ui_FormTimeMapper):
         item.setBackground(QBrush(QColor(background)))
 
     def _color_list(self):
-        colors = cycle(config.timemaper_color)
+        colors = cycle(config.timemapper_color)
         color = next(colors)
 
         row_count = self.ct_table.rowCount()

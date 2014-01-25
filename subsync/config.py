@@ -18,15 +18,15 @@ fileext_subtitle = ["ass", "ssa", "srt"]
 
 shortcut = {
     'main_start': 'F2',
-    'timemaper_addpart': 'F4',
-    'timemaper_addmap': 'F5',
-    'timemaper_dellast': 'F9',
-    'timemaper_finish': 'F11',
-    'timemaper_next': 'Tab',
-    'timemaper_next_with_time': 'Ctrl+Tab',
+    'timemapper_addpart': 'F4',
+    'timemapper_addmap': 'F5',
+    'timemapper_dellast': 'F9',
+    'timemapper_finish': 'F11',
+    'timemapper_next': 'Tab',
+    'timemapper_next_with_time': 'Ctrl+Tab',
 }
 
-timemaper_color = [
+timemapper_color = [
     ('#111', '#FFF'),
     ('#111', '#CCC')
 ]

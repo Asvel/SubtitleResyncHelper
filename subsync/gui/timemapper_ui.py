@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'timemaper.ui'
+# Form implementation generated from reading ui file 'timemapper.ui'
 #
 # Created: Tue Apr 30 15:33:37 2013
 #      by: PyQt4 UI code generator 4.9.6

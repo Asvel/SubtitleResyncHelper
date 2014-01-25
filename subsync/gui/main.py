@@ -8,7 +8,7 @@ from PyQt4.QtGui import (QMainWindow, QFileDialog, QMessageBox,
                          QTreeWidgetItem, QTreeWidget)
 
 from subsync import config, timemap, subtitle
-from subsync.gui.timemaper import FormTimeMapper
+from subsync.gui.timemapper import FormTimeMapper
 from subsync.gui.main_ui import Ui_MainWindow
 
 
