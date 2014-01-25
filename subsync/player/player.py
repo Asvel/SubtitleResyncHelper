@@ -2,7 +2,8 @@
 
 import subprocess
 
-from subsync import config, time
+from subsync import config
+from subsync.time import Time
 
 
 class Player(object):
@@ -26,7 +27,7 @@ class Player(object):
         self._player.terminate()
 
     def _parse_time(self, s):
-        return time.parse(s)
+        return Time(s)
 
     def _gettime(self):
         raise NotImplementedError()

@@ -6,7 +6,8 @@ import argparse
 
 import pysubs
 
-from subsync import time, timemap, shifter
+from subsync import timemap, shifter
+from subsync.time import Time
 
 
 def run(args=sys.argv):
@@ -56,7 +57,7 @@ def run(args=sys.argv):
     tmap = []
     with open(ftm, encoding='utf-8') as f:
         for line in f:
-            tmap.append([time.parse(x) for x in line.split()])
+            tmap.append([Time(x) for x in line.split()])
 
     timedelta = timemap.normalize(tmap)
 

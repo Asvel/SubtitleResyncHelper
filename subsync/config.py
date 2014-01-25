@@ -9,6 +9,8 @@ import json as _json
 playerpath = ""
 playername = None
 
+mediainfodir = ""
+
 filedialog_lastdir = ""
 
 fileext_video = ["mkv", "mp4"]
@@ -28,6 +30,8 @@ timemaper_color = [
     ('#111', '#FFF'),
     ('#111', '#CCC')
 ]
+
+match_time_to_frame = True
 
 
 _config_path = _os.path.join(_os.path.dirname(_sys.argv[0]), "config.json")

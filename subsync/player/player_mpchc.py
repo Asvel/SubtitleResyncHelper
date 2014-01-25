@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 
 import subprocess
+import math
 from uuid import uuid4 as uuid
 
-from subsync import config, win
-from subsync.retry import retry
+from subsync import config, win, mediainfo
+from subsync.util import retryfunc
 from subsync.time import Time
 from subsync.player.player_win import PlayerWin as Player
 
@@ -59,12 +60,15 @@ class CMD:
 class PlayerMPCHC(Player):
 
     def _open(self):
+        self._video_frame_rate = mediainfo.frame_rate(self._filepath)
+
         wnd = win.WNDCLASS()
         wnd.lpfnWndProc = {win.WM_COPYDATA:self._on_copy_data}
         wnd.lpszClassName = str(uuid())
         wnd.hInstance = win.GetModuleHandle(None)
-        self._hwnd_listener = win.CreateWindow(win.RegisterClass(wnd),
-            "srhListener",0, 0, 0, 0, 0, 0, 0, wnd.hInstance, None)
+        self._hwnd_listener = win.CreateWindow(
+            win.RegisterClass(wnd), "srhListener",
+            0, 0, 0, 0, 0, 0, 0, wnd.hInstance, None)
 
         self._player = subprocess.Popen(self._generate_args())
 
@@ -95,7 +99,7 @@ class PlayerMPCHC(Player):
         def pump_message():
             win.PumpWaitingMessages()
             return condition()
-        retry(pump_message)
+        retryfunc(pump_message)
 
     def _close(self):
         self._send_message(CMD.CLOSEAPP)
@@ -105,7 +109,14 @@ class PlayerMPCHC(Player):
         self.__time = None
         self._send_message(CMD.GETCURRENTPOSITION)
         self._pump_message_until(lambda: self.__time is not None)
-        time = Time(s=self.__time) if self.__time is not None else None
+        time = None
+        if self.__time is not None:
+            ms = self.__time * 1000
+            # 知道帧率的时候，调整时间为相应帧开始的时间
+            if config.match_time_to_frame and self._video_frame_rate is not None:
+                frame = math.floor((ms-1) / 1000 * self._video_frame_rate)
+                ms = math.ceil(frame / self._video_frame_rate * 1000)
+            time = Time(ms=ms)
         return time
 
     def _settime(self, time):

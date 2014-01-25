@@ -8,7 +8,8 @@ from PyQt4.QtGui import (QDialog, QKeySequence, QTableWidgetItem, QHeaderView,
                          QMessageBox, QColor, QBrush, QItemSelectionModel)
 from pygs import QxtGlobalShortcut
 
-from subsync import config, player, time
+from subsync import config, player, mediainfo
+from subsync.time import Time, is_approx_equal
 from subsync.gui.timemaper_ui import Ui_FormTimeMapper
 
 
@@ -32,6 +33,8 @@ class FormTimeMapper(QDialog, Ui_FormTimeMapper):
 
         self.filetypes = filetypes
         self.filepaths = filepaths
+
+        self.timedelta_tolerance = self._calc_timedelta_tolerance()
 
         if callback is not None:
             self.finished.connect(callback)
@@ -67,7 +70,7 @@ class FormTimeMapper(QDialog, Ui_FormTimeMapper):
         for j in range(self.ct_table.columnCount()):
             col = [self.ct_table.item(i, j).text()
                    for i in range(self.ct_table.rowCount())]
-            col = [time.parse(x) if x != "" else None for x in col]
+            col = [Time(x) if x != "" else None for x in col]
             self.timemap.append(col)
         self.finished.emit(self.timemap)
 
@@ -108,13 +111,13 @@ class FormTimeMapper(QDialog, Ui_FormTimeMapper):
     def _get_times_by_row(self, row):
         texts = [self.ct_table.item(row, i).text()
                  for i in range(self.ct_table.columnCount())]
-        times = [None if x == '' else time.parse(x) for x in texts]
+        times = [None if x == '' else Time(x) for x in texts]
         return times
 
     def _get_times_by_column(self, column):
         texts = [self.ct_table.item(i, column).text()
                  for i in range(self.ct_table.rowCount())]
-        times = [None if x is None else time.parse(x) for x in texts]
+        times = [None if x is None else Time(x) for x in texts]
         return times
 
     def _is_same_time_delta(self, times1, times2):
@@ -122,7 +125,7 @@ class FormTimeMapper(QDialog, Ui_FormTimeMapper):
         if all(times1) and all(times2):
             # 时间差在允许的范围内
             delta = [time1-time2 for time1, time2 in zip(times1, times2)]
-            if time.is_approx_equal(min(delta), max(delta)):
+            if is_approx_equal(min(delta), max(delta), self.timedelta_tolerance):
                 return True
         return False
 
@@ -145,6 +148,12 @@ class FormTimeMapper(QDialog, Ui_FormTimeMapper):
                     color = next(colors)
             for j in range(column_count):
                 self._color_item(self.ct_table.item(i, j), *color)
+
+    def _calc_timedelta_tolerance(self):
+        frame_rates = (mediainfo.frame_rate(x) for x in self.filepaths)
+        max_frame_rate = max(x for x in frame_rates if x is not None)
+        tolerance_ms = 1000 / max_frame_rate // 2
+        return Time(ms=tolerance_ms)
 
     def _add_shortcut(self, key_sequence, slot):
         shortcut = QxtGlobalShortcut(QKeySequence(key_sequence))

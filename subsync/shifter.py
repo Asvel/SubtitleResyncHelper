@@ -4,6 +4,7 @@ import logging
 
 from subsync.time import Time, is_approx_equal
 
+
 SHIFT_STOP = 0      # 停止并返回
 SHIFT_APART = 1     # 分别按各自的调整量调整
 SHIFT_BY_START = 2  # 按开始时间的调整量调整
