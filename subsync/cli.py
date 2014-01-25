@@ -4,9 +4,7 @@ import sys
 import logging
 import argparse
 
-import pysubs
-
-from subsync import timemap, shifter
+from subsync import subtitle
 from subsync.time import Time
 
 
@@ -35,7 +33,7 @@ def run(args=sys.argv):
                         choices=['none', 'error', 'warning', 'info', 'debug'],
                         help="输出信息的等级，默认为 info")
     parser.add_argument('-d', '--diffdeltahandle', default='apart',
-                        choices=['stop', 'apart', 'start', 'end'],
+                        choices=['falied', 'apart', 'start', 'end'],
                         help="开始结束时间调整量不同的处理方法，默认为 apart")
     args = parser.parse_args(args)
 
@@ -47,20 +45,16 @@ def run(args=sys.argv):
     logging.basicConfig(format='%(levelname)s\t: %(message)s', level=loglevel)
 
     diffdeltahandledict = {
-        'stop': shifter.SHIFT_STOP,
-        'apart': shifter.SHIFT_APART,
-        'start': shifter.SHIFT_BY_START,
-        'end': shifter.SHIFT_BY_END,
+        'falied': subtitle.SHIFT_FAILED,
+        'apart': subtitle.SHIFT_APART,
+        'start': subtitle.SHIFT_BY_START,
+        'end': subtitle.SHIFT_BY_END,
     }
-    diffdeltahandle = diffdeltahandledict[args.diffdeltahandle]
+    diff_delta_handler = diffdeltahandledict[args.diffdeltahandle]
 
-    tmap = []
+    timemap = []
     with open(ftm, encoding='utf-8') as f:
         for line in f:
-            tmap.append([Time(x) for x in line.split()])
+            timemap.append([Time(x) for x in line.split()])
 
-    timedelta = timemap.normalize(tmap)
-
-    subs = pysubs.load(fni)
-    shifter.shift(subs, timedelta, diffdeltahandle)
-    subs.save(fno)
+    subtitle.shift(fni, fno, None, timemap, diff_delta_handler)

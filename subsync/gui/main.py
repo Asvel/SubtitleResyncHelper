@@ -1,14 +1,13 @@
 # -*- coding: utf-8 -*-
 
 import os
-from collections import OrderedDict, namedtuple
+from collections import OrderedDict
 
-import pysubs
 from PyQt4.QtCore import Qt, pyqtSignal
 from PyQt4.QtGui import (QMainWindow, QFileDialog, QMessageBox,
                          QTreeWidgetItem, QTreeWidget)
 
-from subsync import config, timemap, shifter
+from subsync import config, timemap, subtitle
 from subsync.gui.timemaper import FormTimeMapper
 from subsync.gui.main_ui import Ui_MainWindow
 
@@ -181,31 +180,23 @@ class FormMain(QMainWindow, Ui_MainWindow):
 
         for video_dst, timelist_dst in zip(videos_dst, timelists_dst):
             for video_src, timelist_src, subtitles_src in \
-                zip(videos_src, timelists_src, subtitless_src):
+                    zip(videos_src, timelists_src, subtitless_src):
                 timedelta = timemap.normalize(zip(timelist_src, timelist_dst))
                 for sub_src in subtitles_src:
                     # 生成字幕文件名
-                    video_src_mainname = os.path.splitext(
-                        os.path.split(video_src)[1])[0]
+                    video_src_mainname = os.path.splitext(os.path.split(video_src)[1])[0]
                     sub_src_name = os.path.split(sub_src)[1]
-                    video_dst_mainname = os.path.splitext(
-                        os.path.split(video_dst)[1])[0]
+                    video_dst_mainname = os.path.splitext(os.path.split(video_dst)[1])[0]
                     if sub_src_name.startswith(video_src_mainname):
-                        sub_dst_name = video_dst_mainname + \
-                                       sub_src_name[len(video_src_mainname):]
+                        sub_dst_name = video_dst_mainname + sub_src_name[len(video_src_mainname):]
                     else:
                         sub_dst_name = sub_src_name
-                    sub_dst = os.path.join(os.path.dirname(video_dst),
-                                           sub_dst_name)
+                    sub_dst = os.path.join(os.path.dirname(video_dst), sub_dst_name)
 
                     # 调整字幕
-                    subs = pysubs.load(sub_src)
-                    shifter.shift(subs, timedelta)
-                    subs.info['Resync Info'] = str(timedelta)
-                    subs.save(sub_dst)
+                    subtitle.shift(sub_src, sub_dst, timedelta, None, None, video_src, video_dst)
 
         self.statusBar().showMessage("调整成功")
-
 
     def ct_tree_itemexpanded(self, item):
         self.sender().resizeColumnToContents(0)

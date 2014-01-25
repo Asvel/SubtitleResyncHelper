@@ -8,8 +8,8 @@ from PyQt4.QtGui import (QDialog, QKeySequence, QTableWidgetItem, QHeaderView,
                          QMessageBox, QColor, QBrush, QItemSelectionModel)
 from pygs import QxtGlobalShortcut
 
-from subsync import config, player, mediainfo
-from subsync.time import Time, is_approx_equal
+from subsync import config, player, time, mediainfo
+from subsync.time import Time
 from subsync.gui.timemaper_ui import Ui_FormTimeMapper
 
 
@@ -125,7 +125,7 @@ class FormTimeMapper(QDialog, Ui_FormTimeMapper):
         if all(times1) and all(times2):
             # 时间差在允许的范围内
             delta = [time1-time2 for time1, time2 in zip(times1, times2)]
-            if is_approx_equal(min(delta), max(delta), self.timedelta_tolerance):
+            if time.is_approx_equal(min(delta), max(delta), self.timedelta_tolerance):
                 return True
         return False
 
