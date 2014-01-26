@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'timemapper.ui'
 #
-# Created: Tue Apr 30 15:33:37 2013
+# Created: Sun Jan 26 13:17:01 2014
 #      by: PyQt4 UI code generator 4.9.6
 #
 # WARNING! All changes made in this file will be lost!
@@ -26,7 +26,7 @@ except AttributeError:
 class Ui_FormTimeMapper(object):
     def setupUi(self, FormTimeMapper):
         FormTimeMapper.setObjectName(_fromUtf8("FormTimeMapper"))
-        FormTimeMapper.resize(180, 102)
+        FormTimeMapper.resize(200, 102)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
