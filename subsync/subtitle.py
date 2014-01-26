@@ -6,7 +6,7 @@ from os import path
 import pysubs
 
 import subsync
-from subsync import config, time, timemap
+from subsync import time, timemap, player
 from subsync.time import Time
 from subsync.util import dump_readable_json
 
@@ -71,14 +71,14 @@ class Subtitle:
         else:
             logging.warning("时间偏移表为空")
 
-    def set_resync_info(self, source_media_path, target_media_path):
+    def set_resync_info(self, source_media_path, target_media_path, player_name):
         """在字幕中设置调整信息
 
         调整信息包括 调整信息版本、源媒体、目的媒体、源字幕、平移时间偏移表
         """
         info = {
             'version': 'subsync-' + subsync.__version__,
-            'media_player': config.playername,
+            'media_player': player_name,
             'source_media': path.basename(source_media_path),
             'target_media': path.basename(target_media_path),
             'source_subtitle': path.basename(self._filepath),
@@ -95,8 +95,11 @@ class Subtitle:
         self._subs.save(filepath)
 
 
-def shift(source_sub_path, target_sub_path, timedelta=None, timemap_=None,
-          diff_delta_handler=SHIFT_APART, source_media_path=None, target_media_path=None):
+def shift(source_sub_path, target_sub_path,
+          timedelta=None, timemap_=None,
+          diff_delta_handler=SHIFT_APART,
+          source_media_path=None, target_media_path=None,
+          playertype=None):
     """平移一个字幕的时间轴
 
     source_sub_path 源字幕路径
@@ -112,8 +115,9 @@ def shift(source_sub_path, target_sub_path, timedelta=None, timemap_=None,
     """
     if timedelta is None:
         timedelta = timemap.normalize(timemap_)
+    player_name = player.getplayer(playertype).name if playertype else None
 
     subs = Subtitle(source_sub_path)
     subs.shift(timedelta, diff_delta_handler)
-    subs.set_resync_info(source_media_path, target_media_path)
+    subs.set_resync_info(source_media_path, target_media_path, player_name)
     subs.save_as(target_sub_path)

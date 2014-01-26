@@ -8,6 +8,9 @@ from subsync.time import Time
 
 class Player(object):
 
+    name = None
+    """播放器名称"""
+
     timedelta_tolerance = 30
     """时间偏移量容差"""
 

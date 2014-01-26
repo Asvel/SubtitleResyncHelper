@@ -6,7 +6,7 @@ from uuid import uuid4 as uuid
 from subsync import config, win
 from subsync.util import retryfunc
 from subsync.time import Time
-from subsync.player.player_win import PlayerWin as Player
+from subsync.player.player_win import PlayerWin
 
 
 class CMD:
@@ -56,7 +56,9 @@ class CMD:
     OSDSHOWMESSAGE     = 0xA0005000
 
 
-class PlayerMPCHC(Player):
+class PlayerMPCHC(PlayerWin):
+
+    name = "Media Player Classic - Home Cinema"
 
     timedelta_tolerance = 5
 

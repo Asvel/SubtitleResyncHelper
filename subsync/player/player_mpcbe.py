@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
-from subsync.player.player_mpchc import PlayerMPCHC as Player
+from subsync.player.player_mpchc import PlayerMPCHC
 
 
-class PlayerMPCBE(Player):
-    pass
+class PlayerMPCBE(PlayerMPCHC):
+
+    name = "Media Player Classic - BE"

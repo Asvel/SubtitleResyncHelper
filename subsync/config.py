@@ -7,7 +7,7 @@ import json as _json
 
 
 playerpath = ""
-playername = None
+playertype = None
 
 mediainfodir = ""
 

@@ -194,7 +194,8 @@ class FormMain(QMainWindow, Ui_MainWindow):
                     sub_dst = os.path.join(os.path.dirname(video_dst), sub_dst_name)
 
                     # 调整字幕
-                    subtitle.shift(sub_src, sub_dst, timedelta, None, None, video_src, video_dst)
+                    subtitle.shift(sub_src, sub_dst, timedelta, None, None, video_src, video_dst,
+                                   config.playertype)
 
         self.statusBar().showMessage("调整成功")
 

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from subsync import config, win
+from subsync import win
 from subsync.player.player import Player
 
 

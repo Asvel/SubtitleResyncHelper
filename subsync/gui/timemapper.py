@@ -13,7 +13,7 @@ from subsync.time import Time
 from subsync.gui.timemapper_ui import Ui_FormTimeMapper
 
 
-Player = player.getplayer(config.playername)
+Player = player.getplayer(config.playertype)
 
 
 class FormTimeMapper(QDialog, Ui_FormTimeMapper):
