@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
 
 import subprocess
-import math
 from uuid import uuid4 as uuid
 
-from subsync import config, win, mediainfo
+from subsync import config, win
 from subsync.util import retryfunc
 from subsync.time import Time
 from subsync.player.player_win import PlayerWin as Player
@@ -62,8 +61,6 @@ class PlayerMPCHC(Player):
     timedelta_tolerance = 5
 
     def _open(self):
-        self._video_frame_rate = mediainfo.frame_rate(self._filepath)
-
         wnd = win.WNDCLASS()
         wnd.lpfnWndProc = {win.WM_COPYDATA:self._on_copy_data}
         wnd.lpszClassName = str(uuid())
@@ -95,7 +92,7 @@ class PlayerMPCHC(Player):
         if command == CMD.CONNECT:
             self._hwnd = int(message)
         elif command == CMD.CURRENTPOSITION:
-            self.__time = float(message)
+            self.__time = Time(s=float(message))
 
     def _pump_message_until(self, condition):
         def pump_message():
@@ -111,15 +108,7 @@ class PlayerMPCHC(Player):
         self.__time = None
         self._send_message(CMD.GETCURRENTPOSITION)
         self._pump_message_until(lambda: self.__time is not None)
-        time = None
-        if self.__time is not None:
-            ms = self.__time * 1000
-            # 知道帧率的时候，调整时间为相应帧开始的时间
-            if config.match_time_to_frame and self._video_frame_rate is not None:
-                frame = math.floor((ms-1) / 1000 * self._video_frame_rate)
-                ms = math.ceil(frame / self._video_frame_rate * 1000)
-            time = Time(ms=ms)
-        return time
+        return self.__time
 
     def _settime(self, time):
         self._send_message(CMD.SETPOSITION, str(time.ms_time/1000))

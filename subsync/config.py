@@ -31,9 +31,6 @@ timemapper_color = [
     ('#111', '#CCC')
 ]
 
-# 不要打开这个功能，它不能完全正常工作
-match_time_to_frame = False
-
 
 _config_path = _os.path.join(_os.path.dirname(_sys.argv[0]), "config.json")
 

@@ -8,7 +8,7 @@ from PyQt4.QtGui import (QDialog, QKeySequence, QTableWidgetItem, QHeaderView,
                          QMessageBox, QColor, QBrush, QItemSelectionModel)
 from pygs import QxtGlobalShortcut
 
-from subsync import config, player, time, mediainfo
+from subsync import config, player, time
 from subsync.time import Time
 from subsync.gui.timemapper_ui import Ui_FormTimeMapper
 
