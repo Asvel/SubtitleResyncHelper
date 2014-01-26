@@ -8,6 +8,9 @@ from subsync.time import Time
 
 class Player(object):
 
+    timedelta_tolerance = 30
+    """时间偏移量容差"""
+
     def __init__(self, filepath, autoopen=True):
         self._filepath = filepath
         self._opened = False

@@ -59,6 +59,8 @@ class CMD:
 
 class PlayerMPCHC(Player):
 
+    timedelta_tolerance = 5
+
     def _open(self):
         self._video_frame_rate = mediainfo.frame_rate(self._filepath)
 

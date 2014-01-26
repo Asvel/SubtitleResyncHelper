@@ -34,8 +34,6 @@ class FormTimeMapper(QDialog, Ui_FormTimeMapper):
         self.filetypes = filetypes
         self.filepaths = filepaths
 
-        self.timedelta_tolerance = self._calc_timedelta_tolerance()
-
         if callback is not None:
             self.finished.connect(callback)
 
@@ -125,7 +123,7 @@ class FormTimeMapper(QDialog, Ui_FormTimeMapper):
         if all(times1) and all(times2):
             # 时间差在允许的范围内
             delta = [time1-time2 for time1, time2 in zip(times1, times2)]
-            if time.is_approx_equal(min(delta), max(delta), self.timedelta_tolerance):
+            if time.is_approx_equal(min(delta), max(delta), Player.timedelta_tolerance):
                 return True
         return False
 
@@ -148,12 +146,6 @@ class FormTimeMapper(QDialog, Ui_FormTimeMapper):
                     color = next(colors)
             for j in range(column_count):
                 self._color_item(self.ct_table.item(i, j), *color)
-
-    def _calc_timedelta_tolerance(self):
-        frame_rates = (mediainfo.frame_rate(x) for x in self.filepaths)
-        max_frame_rate = max(x for x in frame_rates if x is not None)
-        tolerance_ms = 1000 / max_frame_rate // 2
-        return Time(ms=tolerance_ms)
 
     def _add_shortcut(self, key_sequence, slot):
         shortcut = QxtGlobalShortcut(QKeySequence(key_sequence))
