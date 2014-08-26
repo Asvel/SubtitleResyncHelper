@@ -3,9 +3,9 @@
 import logging
 from itertools import cycle
 
-from PyQt4.QtCore import Qt, pyqtSignal
-from PyQt4.QtGui import (QDialog, QKeySequence, QTableWidgetItem, QHeaderView,
-                         QMessageBox, QColor, QBrush, QItemSelectionModel)
+from PyQt5.QtCore import Qt, pyqtSignal, QItemSelectionModel
+from PyQt5.QtGui import QKeySequence, QColor, QBrush
+from PyQt5.QtWidgets import QDialog, QTableWidgetItem, QHeaderView, QMessageBox
 from pygs import QxtGlobalShortcut
 
 from subsync import config, player, time
@@ -28,7 +28,7 @@ class FormTimeMapper(QDialog, Ui_FormTimeMapper):
         self.move(0, 0)
         self.ct_table.setRowCount(0)
         self.ct_table.setColumnCount(len(filepaths))
-        self.ct_table.horizontalHeader().setResizeMode(
+        self.ct_table.horizontalHeader().setSectionResizeMode(
             QHeaderView.ResizeToContents)
 
         self.filetypes = filetypes

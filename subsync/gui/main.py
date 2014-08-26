@@ -3,9 +3,8 @@
 import os
 from collections import OrderedDict
 
-from PyQt4.QtCore import Qt, pyqtSignal
-from PyQt4.QtGui import (QMainWindow, QFileDialog, QMessageBox,
-                         QTreeWidgetItem, QTreeWidget)
+from PyQt5.QtWidgets import (QMainWindow, QFileDialog, QMessageBox,
+                             QTreeWidgetItem, QTreeWidget)
 
 from subsync import config, timemap, subtitle
 from subsync.gui.timemapper import FormTimeMapper
@@ -74,7 +73,7 @@ class FormMain(QMainWindow, Ui_MainWindow):
 
         # 获取文件列表
         filelist = QFileDialog.getOpenFileNames(self, "选择原始文件",
-            config.filedialog_lastdir, filedialog_filter)
+            config.filedialog_lastdir, filedialog_filter)[0]
         if len(filelist) > 0:
             config.filedialog_lastdir = os.path.dirname(filelist[0])
         filelist = [x for x in filelist if os.path.isfile(x)]
@@ -104,7 +103,7 @@ class FormMain(QMainWindow, Ui_MainWindow):
 
         # 获取文件列表
         filelist = QFileDialog.getOpenFileNames(self, "选择目标文件",
-            config.filedialog_lastdir, filedialog_filter)
+            config.filedialog_lastdir, filedialog_filter)[0]
         if len(filelist) > 0:
             config.filedialog_lastdir = os.path.dirname(filelist[0])
         filelist = [x for x in filelist if os.path.isfile(x)]

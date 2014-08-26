@@ -3,7 +3,7 @@
 
 import sys
 
-from PyQt4.QtGui import QApplication
+from PyQt5.QtWidgets import QApplication
 
 from subsync import config, gui
 

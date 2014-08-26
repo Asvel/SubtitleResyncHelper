@@ -8,8 +8,8 @@ from win32con import *
 from win32event import *
 from win32gui import *
 from win32process import *
-from PyQt4.QtGui import QKeySequence
-from PyQt4.QtCore import Qt
+from PyQt5.QtGui import QKeySequence
+from PyQt5.QtCore import Qt
 
 
 def GetProcessHandleByProcessId(pid):
