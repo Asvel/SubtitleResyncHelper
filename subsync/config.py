@@ -32,7 +32,8 @@ timemapper_color = [
 ]
 
 
-_config_path = _os.path.join(_os.path.dirname(_sys.argv[0]), "config.json")
+#_config_path = _os.path.join(_os.path.dirname(_sys.argv[0]), "config.json")
+_config_path = "config.json"
 
 
 def _load():

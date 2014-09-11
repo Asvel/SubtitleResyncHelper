@@ -3,9 +3,6 @@
 import json
 from time import sleep
 
-import subsync.time
-
-
 __all__ = ['tryfunc', 'retryfunc', 'is_approx_equal', 'dump_readable_json']
 
 
@@ -43,7 +40,8 @@ class _ReadableJsonEncoder(json.JSONEncoder):
         super().__init__(ensure_ascii=False, check_circular=False, sort_keys=True, indent=intdent)
 
     def default(self, o):
-        if isinstance(o, subsync.time.Time):
+        from subsync.time import Time
+        if isinstance(o, Time):
             return repr(o)
         else:
             return json.JSONEncoder.default(self, o)
