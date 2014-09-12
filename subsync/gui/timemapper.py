@@ -34,6 +34,8 @@ class FormTimeMapper(QDialog, Ui_FormTimeMapper):
         self.filetypes = filetypes
         self.filepaths = filepaths
 
+        self.lasttimes = [Time(ms=0)] * len(filepaths)
+
         if callback is not None:
             self.finished.connect(callback)
 
@@ -99,16 +101,17 @@ class FormTimeMapper(QDialog, Ui_FormTimeMapper):
             self.showinfo("获取时间失败", type_='error')
 
     def focus_next_player(self, with_time_sync=False):
-        current_index = next((i for i in range(len(self.players))
-            if self.players[i].is_active), len(self.players)-1)
-        next_player = self.players[(current_index+1) % len(self.players)]
+        current_index = next((i for i, p in enumerate(self.players) if p.is_active),
+                             len(self.players)-1)
+        next_index = (current_index+1) % len(self.players)
+        next_player = self.players[next_index]
         next_player.activate()
         if with_time_sync:
-            next_player.time = self.players[current_index].time
+            time_delta = self.lasttimes[current_index] - self.lasttimes[next_index]
+            next_player.time = self.players[current_index].time - time_delta
 
     def _get_times_by_row(self, row):
-        texts = [self.ct_table.item(row, i).text()
-                 for i in range(self.ct_table.columnCount())]
+        texts = [self.ct_table.item(row, i).text() for i in range(self.ct_table.columnCount())]
         times = [None if x == '' else Time(x) for x in texts]
         return times
 
@@ -146,6 +149,8 @@ class FormTimeMapper(QDialog, Ui_FormTimeMapper):
                     color = next(colors)
             for j in range(column_count):
                 self._color_item(self.ct_table.item(i, j), *color)
+
+        self.lasttimes = times[-1]
 
     def _add_shortcut(self, key_sequence, slot):
         shortcut = QxtGlobalShortcut(QKeySequence(key_sequence))
